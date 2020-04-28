@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stock Profit Calculator</title>
+<style>
+  table.greenTable {
+  font-family: Georgia, serif;
+  border: 6px solid #24943A;
+  background-color: #D4EED1;
+  width: 50%;
+}
+table.greenTable td, table.greenTable th {
+  border: 1px solid #24943A;
+  padding: 1px 1px;
+}
+table.greenTable tbody td {
+  font-size: 13px;
+}
+</style>
+</head>
+  <body>
+    <p>&nbsp;</p>
+    <h1>Finance Info</h1>
+
+    <form action="/" method="POST">
+      <table class="greenTable">
+        <tbody>
+          <tr>
+            <td><br><br>&nbsp;Ticket Symbol:<input name="symbol" type="text" required/><br><br></td>
+          </tr>
+          <tr>
+            <td>
+              <br>
+              Output:
+              <h2>{{error_msg}}</h2>
+              <font color="green">{{weekday}} {{month}} {{day}} {{date}} {{time}} {{year}}</font><br>
+
+              <!-- Full name of the company: <br> -->
+              <font color="blue">{{full_name}} {{tickerSymbol}}</font><br>
+
+              <!-- Stock price: <br> -->
+              <font color="red">{{stock_price}}&nbsp;</font>
+              <!-- <br> -->
+
+              <!-- Value changes: <br> -->
+              <font color="red">{{value_change}}&nbsp;</font>
+              <!-- <br> -->
+
+              <!-- Percentage changes(%):<br> -->
+              <font color="red">{{perc_change}}</font><br><br>
+              
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="10"><br><input type="submit" value="Calculate" /><br></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </form>
+
+    <p>&nbsp;</p>
+  </body>
+</html>
