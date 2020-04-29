@@ -9,3 +9,6 @@ export FLASK_APP=app.py
 1) pip install flask
 1) pip install requests
 
+
+##to run use command
+1) flask run 
