@@ -1,0 +1,20 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 debug pnpm": {
+    "isCaseSensitive": false,
+    "store": "/Users/vijendra4/.pnpm-store/2"
+  },
+  "2 error pnpm": {
+    "message": {
+      "code": "ERR_PNPM_NO_IMPORTER_MANIFEST"
+    },
+    "err": {
+      "name": "Error",
+      "message": "No package.json found",
+      "code": "ERR_PNPM_NO_IMPORTER_MANIFEST",
+      "stack": "Error: No package.json found\n    at Object.handler [as default] (/usr/local/lib/node_modules/pnpm/lib/node_modules/@pnpm/plugin-commands-installation/lib/installDeps.js:87:19)"
+    }
+  }
+}
