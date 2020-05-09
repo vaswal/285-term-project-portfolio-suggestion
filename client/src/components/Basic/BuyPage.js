@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Button, Card, Col, Form, ListGroup} from "react-bootstrap";
 import strategyLogo from "../../images/cart.png";
+import ChartComponent from "../Chart";
+
 
 class BuyPage extends Component {
     constructor(props) {
@@ -96,26 +98,34 @@ class BuyPage extends Component {
                     </div>
                 </div>
 
-                <div className='rowC' style={{marginTop: "5%"}}>
+                {this.state.showSelectionComponent && <div className='rowC' style={{marginTop: "5%"}}>
                     {this.getStepsList()}
 
-
                     {this.state.selectedStepIndex === 0 &&
-                    <div style={{marginLeft: "15%"}}>
+                    <div style={{marginLeft: "10%"}}>
                         {this.getStrategyList()}
-                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}} onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
+                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}}
+                                onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
                             Select strategy
                         </Button>
                     </div>}
 
                     {this.state.selectedStepIndex === 1 &&
-                    <div style={{marginLeft: "15%"}}>
-                        {this.getStrategyList()}
-                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}} onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
+                    <div style={{marginLeft: "10%", width:"90%"}}>
+                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}}
+                                onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
                             Select strategy
                         </Button>
+
+                        <h3>ViacomCBS</h3>
+                        <ChartComponent ticker="VIAC"/>
+
+                        <h3>Albemarle Corp.</h3>
+                        <ChartComponent ticker="ALB"/>
+
                     </div>}
                 </div>
+                }
 
 
             </div>
