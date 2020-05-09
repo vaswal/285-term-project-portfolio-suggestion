@@ -8,7 +8,9 @@ class BuyPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            mainStrategyList: localStorage.getItem("mainStrategyList") !== null ? JSON.parse(localStorage.getItem("mainStrategyList")) : [],
             showSelectionComponent: null,
+            mainStrategiesIndex: null,
             selectedStrategyIndex: null,
             selectedStepIndex: 0,
             strategyList: ["Ethical Investing", "Growth Investing", "Index Investing", "Quality Investing", "Value Investing"],
@@ -20,9 +22,11 @@ class BuyPage extends Component {
         return <Card style={{width: '18rem'}}>
             <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={require("../../images/strategy.png")}/>
             <Card.Body style={{alignSelf: "center"}}>
-                <Card.Title >Strategy {index}</Card.Title>
+                <Card.Title >Strategy {index + 1}</Card.Title>
 
-                <button class="btn-primary btn-circle" onClick={() => this.setState({showSelectionComponent: true})} type="button">+</button>
+                <button class="btn-primary btn-circle"
+                        onClick={() => this.setState({showSelectionComponent: true, mainStrategiesIndex: index})}
+                        type="button">+</button>
                 <br/>
                 {/*<br/>*/}
                 {/*<Button onClick={() => this.deleteStore(store)} type="button" variant="primary">Delete</Button>*/}
@@ -30,13 +34,13 @@ class BuyPage extends Component {
         </Card>
     }
 
-    getPortfolioCard = (name, portfolios) => {
+    getPortfolioCard = (index, portfolios) => {
         return <Card style={{width: '22rem'}}>
+            <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={require("../../images/value-investing.png")}/>
+
             <Card.Body>
-                <Card.Title>Store</Card.Title>
+                <Card.Title >Strategy {index + 1} - {this.getMSLFromLocalStorage()[index].name}</Card.Title>
                 <Card.Text>
-                    <b>Strategy name</b> - {name}
-                    <br/>
                     <b>Portfolios</b> - TBD
                 </Card.Text>
                     {/*<Button onClick={() => this.handleShow(index)} type="button" variant="primary">Edit</Button>*/}
@@ -83,6 +87,26 @@ class BuyPage extends Component {
         return <ListGroup as="ul" style={{marginTop: "2%", marginLeft: "2%", width: "15rem"}}>{renderTodos}</ListGroup>
     }
 
+    addToMainStrategyList = () => {
+        const mainStrategyList = JSON.parse(localStorage.getItem("mainStrategyList"))
+        console.log("mainStrategyList: " + mainStrategyList)
+        mainStrategyList.push({name: this.state.strategyList[this.state.selectedStrategyIndex], test: "test"})
+        localStorage.setItem("mainStrategyList", JSON.stringify(mainStrategyList));
+
+        this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})
+    }
+
+    componentDidMount() {
+        if (localStorage.getItem("mainStrategyList") == null) {
+            localStorage.setItem("mainStrategyList", JSON.stringify([]));
+        }
+    }
+
+    getMSLFromLocalStorage = () => {
+        const mainStrategyList = JSON.parse(localStorage.getItem("mainStrategyList"));
+        return mainStrategyList ? mainStrategyList : [];
+    }
+
     render() {
         return (
             <div>
@@ -90,10 +114,10 @@ class BuyPage extends Component {
                 <div>
                     <div className='rowC'>
                         <div style={{marginLeft: "25%", marginRight: "15%"}}>
-                            {this.getEmptyPortfolioCard(1)}
+                            {this.getMSLFromLocalStorage().length >= 1 ? this.getPortfolioCard(0) : this.getEmptyPortfolioCard(0)}
                         </div>
                         <div>
-                            {this.getEmptyPortfolioCard(2)}
+                            {this.getMSLFromLocalStorage().length >= 2 ? this.getPortfolioCard(1) : this.getEmptyPortfolioCard(1)}
                         </div>
                     </div>
                 </div>
@@ -124,10 +148,17 @@ class BuyPage extends Component {
                         <ChartComponent ticker="ALB"/>
 
                     </div>}
+
+                    {this.state.selectedStepIndex === 2 &&
+                    <div style={{marginLeft: "10%", width:"90%"}}>
+                        <h4>I confirm that I am selecting </h4>
+                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}}
+                                onClick={() => this.addToMainStrategyList()}>
+                            Agree and add
+                        </Button>
+                    </div>}
                 </div>
                 }
-
-
             </div>
         )
     }

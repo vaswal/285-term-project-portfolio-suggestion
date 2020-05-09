@@ -32,11 +32,11 @@ def func1(ticker):
         return "Error: No id field provided. Please specify an id."
 
     
-@app.route('/companyProfile', methods=['GET'])
-def func2():
-    if 'id' in request.args:
+@app.route('/companyProfile/<ticker>', methods=['GET'])
+def func2(ticker):
+    if ticker:
          #Inputs
-        stock_symbol = request.args['id']
+        stock_symbol = ticker
         session = requests.session()
         url = "https://financialmodelingprep.com/api/v3/company/profile/"+stock_symbol
         print (url)
