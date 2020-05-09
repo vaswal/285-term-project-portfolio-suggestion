@@ -22,5 +22,6 @@ export function getData() {
     const promiseMSFT = fetch("https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/MSFT.tsv")
         .then(response => response.text())
         .then(data => tsvParse(data, parseData(parseDate)))
+
     return promiseMSFT;
 }

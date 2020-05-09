@@ -25,7 +25,7 @@ class HomePage extends Component {
 
                         </Nav>
                         <Nav className="ml-auto">
-                            <Nav.Link as={NavLink} to='/homeOwner/help'>Test</Nav.Link>
+                            <Nav.Link as={NavLink} to='/buy/'>Buy</Nav.Link>
                         </Nav>
                     </Navbar>
                 </div>
