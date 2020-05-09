@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Button, Card, Col, Form, ListGroup} from "react-bootstrap";
 import strategyLogo from "../../images/cart.png";
+import valueInvesting from "../../images/value-investing.png";
+import qualityInvesting from "../../images/quality-investing.png";
 import ChartComponent from "../Chart";
 
 
@@ -35,11 +37,13 @@ class BuyPage extends Component {
     }
 
     getPortfolioCard = (index, portfolios) => {
+        const name = this.getMSLFromLocalStorage()[index].name;
+
         return <Card style={{width: '22rem'}}>
-            <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={require("../../images/value-investing.png")}/>
+            <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={this.getStrategyLogo(name)}/>
 
             <Card.Body>
-                <Card.Title >Strategy {index + 1} - {this.getMSLFromLocalStorage()[index].name}</Card.Title>
+                <Card.Title >Strategy {index + 1} - {name}</Card.Title>
                 <Card.Text>
                     <b>Portfolios</b> - TBD
                 </Card.Text>
@@ -106,6 +110,35 @@ class BuyPage extends Component {
         const mainStrategyList = JSON.parse(localStorage.getItem("mainStrategyList"));
         return mainStrategyList ? mainStrategyList : [];
     }
+
+    getStrategyLogo = (name) => {
+        const fontSize = 20;
+        let badge = null;
+
+        switch (name) {
+            case "Value Investing":
+                badge = valueInvesting;
+                break;
+
+            case "Quality Investing":
+                badge = qualityInvesting;
+                break;
+
+            case "Ethical Investing":
+                badge = qualityInvesting;
+                break;
+
+            case "Growth Investing":
+                badge = qualityInvesting;
+                break;
+
+            case "Index Investing":
+                badge = qualityInvesting;
+                break;
+        }
+
+        return badge;
+    };
 
     render() {
         return (
