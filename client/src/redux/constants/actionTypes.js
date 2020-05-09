@@ -1,4 +1,5 @@
 //Create all the constants to be used in Redux
+export const GET_FULL_HISTORY = "GET_FULL_HISTORY";
 export const SIGN_UP = "SIGN_UP";
 export const SIGN_IN = "SIGN_IN";
 export const SIGN_IN_ERROR = "SIGN_IN_ERROR";

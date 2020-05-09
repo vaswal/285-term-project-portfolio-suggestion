@@ -1,7 +1,7 @@
-import {SIGN_IN, SIGN_IN_ERROR, SIGN_UP} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, SIGN_IN_ERROR, SIGN_UP} from "../../redux/constants/actionTypes";
 
 const initialState = {
-    signupSuccess: null,
+    fullHistory: [],
     signupMessage: null,
     signinSuccess: null,
     signinMessage: null,
@@ -11,16 +11,13 @@ const initialState = {
     userActive: null
 };
 
-export default function authReducer(state = initialState, action) {
+export default function stockReducer(state = initialState, action) {
     console.log("signin auth reducer:");
     console.log(action.payload);
 
-    if (action.type === SIGN_IN) {
-        localStorage.setItem('id', action.payload.id);
-
+    if (action.type === GET_FULL_HISTORY) {
         return Object.assign({}, state, {
-            signinSuccess: action.payload.id !== null ? true : false,
-            signinMessage: ""
+            fullHistory: [...state.fullHistory, action.payload],
         });
     } else if (action.type === SIGN_IN_ERROR) {
         return Object.assign({}, state, {

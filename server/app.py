@@ -4,15 +4,16 @@ from flask import request,jsonify
 import json
 import datetime
 import requests
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-
-@app.route('/fullHistory', methods=['GET'])
-def func1():
-    if 'id' in request.args:
+@app.route('/fullHistory/<ticker>', methods=['GET'])
+def func1(ticker):
+    if ticker:
          #Inputs
-        stock_symbol = request.args['id']
+        stock_symbol = ticker
         session = requests.session()
         url = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock_symbol
         print (url)

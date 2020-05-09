@@ -1,40 +1,44 @@
-
-import React from 'react';
+import React, { Component }  from 'react';
 import { render } from 'react-dom';
 import Chart from './Chart';
 import { getData } from "./utils"
 import axios from 'axios';
-
+import {connect} from "react-redux";
+import {getFullHistory, } from "../../redux/actions/stockActions";
 import { TypeChooser } from "react-stockcharts/lib/helper";
+import {HOSTNAME} from "../../constants/appConstants";
 
-class ChartComponent extends React.Component {
+function mapStateToProps(store) {
+    return {
+        fullHistory: store.stocks.fullHistory,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getFullHistory: (payload) => dispatch(getFullHistory(payload)),
+    };
+}
+
+class ChartComponent extends Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     data: [],
-        // }
     }
 
     componentDidMount() {
-        // getData().then(data => {
-        //     this.setState({ data })
-        // })
+        const payload = {};
+        payload.ticker = this.props.ticker;
+        this.props.getFullHistory(payload);
 
-        axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
+        //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
+        axios.get(`http://${HOSTNAME}:5000/fullHistory/${this.props.ticker}`)
             .then(data => data.data.historical)
             .then((data) => {
-                //console.log("Axios response")
-                //console.log(data)
-
                 for (let i = 0;  i < data.length; i++) {
-                    //console.log("data[i]")
                     let parts = data[i].date.match(/(\d+)/g);
-                    // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
-                    //return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
                     data[i].date = new Date(parts[0], parts[1] - 1, parts[2])
-                    //console.log(data[i].date)
                 }
-                //this.setState({data: response})
+
                 this.setState({ data })
             });
     }
@@ -47,6 +51,7 @@ class ChartComponent extends React.Component {
             //console.log("State data")
             //console.log(this.state.data)
         }
+
         return (
             <TypeChooser>
                 {type => <Chart type={type} data={this.state.data} />}
@@ -55,4 +60,4 @@ class ChartComponent extends React.Component {
     }
 }
 
-export default ChartComponent;
+export default connect(mapStateToProps, mapDispatchToProps)(ChartComponent);

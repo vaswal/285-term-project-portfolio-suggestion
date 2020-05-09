@@ -3,6 +3,7 @@ import { Redirect, Switch } from "react-router";
 import { Link, NavLink, Route } from "react-router-dom";
 import { Nav, Navbar, Button } from "react-bootstrap";
 import Portfolio from './Portfolio'
+import logo from "../../images/technology.png";
 import Buy from './BuyPage'
 
 class HomeBasic extends Component {
@@ -14,11 +15,11 @@ class HomeBasic extends Component {
                 <div style={styles.container}>
 
                     <div className='rowC'>
-                        {/*<div>*/}
-                        {/*    <img style={styles.logo} src={logo} alt="Quora" />*/}
-                        {/*</div>*/}
                         <div>
-                            <h3 style={styles.message}>&nbsp;&nbsp;CartPool</h3>
+                            <img style={styles.logo} src={logo} alt="Quora" />
+                        </div>
+                        <div>
+                            <h3 style={styles.message}>&nbsp;&nbsp;Spartan Gold Co.</h3>
                         </div>
                     </div>
                 </div>
@@ -64,7 +65,7 @@ const styles = {
     },
     logo: {
         paddingTop: "10px",
-        width: "50px",
+        width: "80px",
     },
     searchComponent: {}
 }
