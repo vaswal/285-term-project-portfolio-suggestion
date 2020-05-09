@@ -8,7 +8,9 @@ class BuyPage extends Component {
         this.state = {
             showSelectionComponent: null,
             selectedStrategyIndex: null,
-            strategyList: ["Ethical Investing", "Growth Investing", "Index Investing", "Quality Investing", "Value Investing"]
+            selectedStepIndex: 0,
+            strategyList: ["Ethical Investing", "Growth Investing", "Index Investing", "Quality Investing", "Value Investing"],
+            stepsList: ["1. Select strategy", "2. Review", "3. Finish"],
         }
     }
 
@@ -61,6 +63,24 @@ class BuyPage extends Component {
         return <ListGroup>{renderTodos}</ListGroup>
     }
 
+    getStepsList = () => {
+        const renderTodos = this.state.stepsList.map((step, index) => {
+            console.log("step")
+            console.log(step)
+
+            return <ListGroup.Item
+                style={{margin: "1px", width: "15rem"}}
+                active={index === this.state.selectedStepIndex ? true: false}
+                disabled={index === (index > this.state.selectedStepIndex ? true: (this.state.selectedStepIndex ? false: true))}
+                onClick={() => this.setState({selectedStepIndex: index})}
+            >
+                {step}
+            </ListGroup.Item>
+        });
+
+        return <ListGroup as="ul" style={{marginTop: "2%", marginLeft: "2%", width: "15rem"}}>{renderTodos}</ListGroup>
+    }
+
     render() {
         return (
             <div>
@@ -77,24 +97,24 @@ class BuyPage extends Component {
                 </div>
 
                 <div className='rowC' style={{marginTop: "5%"}}>
-                    <ListGroup as="ul" style={{marginTop: "2%", marginLeft: "2%", width: "15rem"}}>
-                        <ListGroup.Item as="li" active={false} disabled={true}>
-                            1. Select strategy
-                        </ListGroup.Item>
-                        <ListGroup.Item as="li" active={false} disabled={true}>
-                            2. Review
-                        </ListGroup.Item>
-                        <ListGroup.Item as="li" active={true} disabled={false}>
-                            3. Finish
-                        </ListGroup.Item>
-                    </ListGroup>
+                    {this.getStepsList()}
 
+
+                    {this.state.selectedStepIndex === 0 &&
                     <div style={{marginLeft: "15%"}}>
                         {this.getStrategyList()}
-                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}} onClick={() => this.setState({redirectToBuyPage: true})}>
+                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}} onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
                             Select strategy
                         </Button>
-                    </div>
+                    </div>}
+
+                    {this.state.selectedStepIndex === 1 &&
+                    <div style={{marginLeft: "15%"}}>
+                        {this.getStrategyList()}
+                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}} onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
+                            Select strategy
+                        </Button>
+                    </div>}
                 </div>
 
 
