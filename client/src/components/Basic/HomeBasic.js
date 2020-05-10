@@ -5,10 +5,18 @@ import { Nav, Navbar, Button } from "react-bootstrap";
 import Portfolio from './Portfolio'
 import logo from "../../images/technology.png";
 import Buy from './BuyPage'
+import Trend from './Trend'
+
 
 class HomeBasic extends Component {
-    render() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isBasic: true
+        }
+    }
 
+    render() {
         return (
             <div>
 
@@ -21,6 +29,11 @@ class HomeBasic extends Component {
                         <div>
                             <h3 style={styles.message}>&nbsp;&nbsp;Spartan Gold Co.</h3>
                         </div>
+                        <Button variant="primary"
+                                style={{alignSelf: "right", marginTop: "10%", marginLeft: "30%"}}
+                                onClick={() => this.setState({isBasic: !this.state.isBasic})}>
+                            Toggle {this.state.isBasic === false ?  "Basic" : "Advanced"}
+                        </Button>
                     </div>
                 </div>
 
@@ -35,6 +48,7 @@ class HomeBasic extends Component {
 
                         <Nav className="ml-auto">
                             <Nav.Link as={NavLink} to='/basic/portfolio/'>Portfolio</Nav.Link>
+                            <Nav.Link as={NavLink} to='/basic/trend/'>Trend</Nav.Link>
                         </Nav>
                     </Navbar>
                 </div>
@@ -42,7 +56,10 @@ class HomeBasic extends Component {
                 <div>
                     <Switch>
                         <Route exact path='/basic/portfolio/' component={Portfolio} />
-                        <Route exact path='/basic/buy/' component={Buy} />
+
+                        {/*<Route exact path='/basic/buy/' component={Buy} view={this.state.view} />*/}
+                        <Route exact path='/basic/buy/' render={() => <Buy isBasic={this.state.isBasic}/>} />
+                        <Route exact path='/basic/trend/' component={Trend} />
                     </Switch>
                 </div>
             </div>

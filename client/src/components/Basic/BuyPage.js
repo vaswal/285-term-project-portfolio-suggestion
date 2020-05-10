@@ -3,8 +3,8 @@ import {Button, Card, Col, Form, ListGroup} from "react-bootstrap";
 import strategyLogo from "../../images/cart.png";
 import valueInvesting from "../../images/value-investing.png";
 import qualityInvesting from "../../images/quality-investing.png";
-import ChartComponent from "../Chart";
-
+import HeikinAshiChart from "../Chart/HeikinAshi";
+import AreaChart from "../Chart/AreaChart";
 
 class BuyPage extends Component {
     constructor(props) {
@@ -101,6 +101,8 @@ class BuyPage extends Component {
     }
 
     componentDidMount() {
+        console.log("this.props.isBasic: " + this.props.isBasic)
+
         if (localStorage.getItem("mainStrategyList") == null) {
             localStorage.setItem("mainStrategyList", JSON.stringify([]));
         }
@@ -132,7 +134,7 @@ class BuyPage extends Component {
                 badge = qualityInvesting;
                 break;
 
-            case "Index Investing":
+            case "IndexTrend Investing":
                 badge = qualityInvesting;
                 break;
         }
@@ -175,10 +177,11 @@ class BuyPage extends Component {
                         </Button>
 
                         <h3>ViacomCBS</h3>
-                        <ChartComponent ticker="VIAC"/>
+                        {!this.props.isBasic ? <HeikinAshiChart ticker="VIAC"/> : <AreaChart ticker="VIAC"/>}
 
                         <h3>Albemarle Corp.</h3>
-                        <ChartComponent ticker="ALB"/>
+                        {!this.props.isBasic  ? <HeikinAshiChart ticker="ALB"/> : <AreaChart ticker="ALB"/>}
+
 
                     </div>}
 

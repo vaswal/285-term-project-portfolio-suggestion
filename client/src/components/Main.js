@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Route} from "react-router-dom";
 import HomePage from "./HomePage";
-import Chart from "./Chart/index";
+import Chart from "./Chart/HeikinAshi";
 import BasicLayout from "./Layout/BasicLayout";
 import Portfolio from "./Basic/Portfolio";
 import './Account/Account.css'

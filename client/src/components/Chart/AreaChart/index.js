@@ -1,24 +1,13 @@
+
 import React, { Component }  from 'react';
 import { render } from 'react-dom';
 import Chart from './Chart';
-import { getData } from "./utils"
-import axios from 'axios';
-import {connect} from "react-redux";
-import {getFullHistory, } from "../../../redux/actions/stockActions";
+ import { getData } from "./utils"
+
 import { TypeChooser } from "react-stockcharts/lib/helper";
+import {connect} from "react-redux";
+import axios from "axios";
 import {HOSTNAME} from "../../../constants/appConstants";
-
-function mapStateToProps(store) {
-    return {
-        fullHistory: store.stocks.fullHistory,
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        getFullHistory: (payload) => dispatch(getFullHistory(payload)),
-    };
-}
 
 class ChartComponent extends Component {
     constructor(props) {
@@ -28,7 +17,6 @@ class ChartComponent extends Component {
     componentDidMount() {
         const payload = {};
         payload.ticker = this.props.ticker;
-        //this.props.getFullHistory(payload);
 
         //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
         axios.get(`http://${HOSTNAME}:5000/fullHistory/${this.props.ticker}`)
@@ -37,6 +25,8 @@ class ChartComponent extends Component {
                 for (let i = 0;  i < data.length; i++) {
                     let parts = data[i].date.match(/(\d+)/g);
                     data[i].date = new Date(parts[0], parts[1] - 1, parts[2])
+                    //console.log("data[i]")
+                    //console.log(data[i])
                 }
 
                 this.setState({ data })
@@ -48,11 +38,6 @@ class ChartComponent extends Component {
             return <div>Loading...</div>
         }
 
-        if (this.state.data !== null) {
-            //console.log("State data")
-            //console.log(this.state.data)
-        }
-
         return (
             <TypeChooser>
                 {type => <Chart type={type} data={this.state.data} />}
@@ -61,4 +46,4 @@ class ChartComponent extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChartComponent);
+export default ChartComponent;
