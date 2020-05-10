@@ -5,8 +5,10 @@ from StockSuggest import get_all, get_strategy, get_historical_strategy
 import json
 import datetime
 import requests
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 ## Stocks as per the intense study and survey based on the strategies
 ethical_investing = ["AAPL", "TSLA", "ADBE"]
@@ -16,11 +18,11 @@ quality_investing = ["NVDA", "MU", "CSCO"]
 value_investing = ["INTC", "BABA", "GE"]
 
 
-@app.route('/fullHistory', methods=['GET'])
-def func1():
-    if 'id' in request.args:
+@app.route('/fullHistory/<ticker>', methods=['GET'])
+def func1(ticker):
+    if ticker:
          #Inputs
-        stock_symbol = request.args['id']
+        stock_symbol = ticker
         session = requests.session()
         url = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock_symbol
         print (url)
@@ -39,11 +41,11 @@ def func1():
         return "Error: No id field provided. Please specify an id."
 
     
-@app.route('/companyProfile', methods=['GET'])
-def func2():
-    if 'id' in request.args:
+@app.route('/companyProfile/<ticker>', methods=['GET'])
+def func2(ticker):
+    if ticker:
          #Inputs
-        stock_symbol = request.args['id']
+        stock_symbol = ticker
         session = requests.session()
         url = "https://financialmodelingprep.com/api/v3/company/profile/"+stock_symbol
         print (url)
