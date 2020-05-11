@@ -6,6 +6,8 @@ import Portfolio from './Portfolio'
 import logo from "../../images/technology.png";
 import Buy from './BuyPage'
 import Trend from './Trend'
+import HomePage from './HomePage'
+
 
 
 class HomeBasic extends Component {
@@ -41,7 +43,7 @@ class HomeBasic extends Component {
                     <Navbar>
                         <Navbar.Brand as={Link} to="/"></Navbar.Brand>
                         <Nav>
-                            <Nav.Link as={NavLink} to="/homePooler/">
+                            <Nav.Link as={NavLink} to="/basic/home/">
                                 HomeBasic
                             </Nav.Link>
                         </Nav>
@@ -55,9 +57,8 @@ class HomeBasic extends Component {
 
                 <div>
                     <Switch>
+                        <Route exact path='/basic/home/' component={HomePage} />
                         <Route exact path='/basic/portfolio/' component={Portfolio} />
-
-                        {/*<Route exact path='/basic/buy/' component={Buy} view={this.state.view} />*/}
                         <Route exact path='/basic/buy/' render={() => <Buy isBasic={this.state.isBasic}/>} />
                         <Route exact path='/basic/trend/' component={Trend} />
                     </Switch>
