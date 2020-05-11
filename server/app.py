@@ -1,14 +1,15 @@
 from flask import Flask
 from flask import render_template
 from flask import request,jsonify,Response
-from StockSuggest import get_all
+# from StockSuggest import get_all
+from MajorIndexes import get_major_indexes
 import json
 import datetime
 import requests
-from flask_cors import CORS
+# from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 
 
@@ -115,6 +116,11 @@ def invest():
 #     response=Response(json.dumps(dict1), mimetype='application/json')
 #     # response.headers.add("Access-Control-Allow-Origin", "*")
 #     return response
+
+@app.route('/major_indexes', methods=['GET'])
+def major_index():
+    majorList = get_major_indexes()
+    return jsonify(majorList)
        
 
 if __name__ == '__main__':
