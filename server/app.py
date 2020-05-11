@@ -57,14 +57,22 @@ def func2(ticker):
     else:
         return "Error: No id field provided. Please specify an id."  
 
+# @app.route('/stock_suggestion', methods=['POST'])
+# def invest():
+#     choices = request.args.get('choices', '')
+#     print("choices")
+#     print(choices)
+#     stocklist = get_all(choices)
+#     return jsonify(stocklist)
 
     
 @app.route('/stock_suggestion', methods=['POST'])
 def invest():
+        req_data = request.get_json()
         amount = 5000
         #pprint(amount)
-        choices = ["Ethical","Growth"]
-        #pprint(choices)
+        choices = req_data['choices']
+        print(choices)
         # choices = json.loads(choices)
 
         stocklist = get_all(choices)
