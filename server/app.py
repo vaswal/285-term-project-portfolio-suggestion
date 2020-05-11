@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template
 from flask import request,jsonify,Response
-from StockSuggest import get_all, get_strategy, get_historical_strategy
+from StockSuggest import get_all
 import json
 import datetime
 import requests
@@ -10,12 +10,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-## Stocks as per the intense study and survey based on the strategies
-ethical_investing = ["AAPL", "TSLA", "ADBE"]
-growth_investing = ["OXLC", "ECC", "AMD"]
-index_investing = ["VOO", "VTI", "ILTB"]
-quality_investing = ["NVDA", "MU", "CSCO"]
-value_investing = ["INTC", "BABA", "GE"]
 
 
 @app.route('/fullHistory/<ticker>', methods=['GET'])
@@ -69,7 +63,7 @@ def func2(ticker):
 def invest():
         amount = 5000
         #pprint(amount)
-        choices = ["Ethical","Value"]
+        choices = ["Ethical"]
         #pprint(choices)
         # choices = json.loads(choices)
 
