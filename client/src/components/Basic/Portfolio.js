@@ -26,7 +26,7 @@ class Portfolio extends Component {
                 <h1>Portfolio HomePage</h1>
                 {this.getMSLFromLocalStorage().length == 0 &&
                 <Button variant="primary" style={styles.button} onClick={() => this.setState({redirectToBuyPage: true})}>
-                    Add ETF
+                    Create Portfolio
                 </Button>}
 
                 <div>
