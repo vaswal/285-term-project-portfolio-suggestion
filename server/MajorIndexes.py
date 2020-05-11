@@ -4,8 +4,6 @@ from flask import jsonify
 #since the major indexes does not return real
 # get all the stocks and percentages for the selected strategies
 def get_major_indexes():
-
-    print('her')
     session = requests.session()
     url = "https://financialmodelingprep.com/api/v3/quotes/index"
     # print(url)
@@ -24,9 +22,3 @@ def get_major_indexes():
     print(result)
     return result
 
-def major_index(index):
-    major_stocks = ['^DJI']
-    for i in range (0, 2):
-        if(index['symbol'] == major_stocks[i]):
-            return True
-    # return False
