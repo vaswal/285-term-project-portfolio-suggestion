@@ -4,7 +4,7 @@ import numpy as np, numpy.random
 import urllib.request as urllib2
 import csv
 import requests
-
+import json
 
 # API_KEY = 'DSJ9W3ZS7A6RWBJC'
 # API_BASE_CURRENT = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&apikey={}&symbol={}&interval=1min' \
@@ -33,16 +33,37 @@ def get_month(stock_symbol):
 # get all the stocks and percentages for the selected strategies
 def get_all(strategy_list):
     stock_percent_list={}
+    response=[]
     if(len(strategy_list)==1):
         print("get all....")
-        print(strategy_list[0])
+        name=strategy_list[0]
         stock_percent_list=get_stock_list(strategy_list[0])
+        return modify_response(stock_percent_list,name)
     else:
         for strategy in strategy_list:
             print("get all")
-            print(strategy)
-            stock_percent_list.update(get_stock_list(strategy))
-    return stock_percent_list
+            name=strategy
+            stock_percent_list=get_stock_list(strategy)
+            response.append(modify_response(stock_percent_list,name))
+        return response
+
+
+def modify_response(stock_percent_list,name):
+    print("name")
+    print(name)
+    sum=0
+    for name in stock_percent_list:
+        print(name)
+        sum=sum+name[0]
+
+    print("sum")
+    print(sum)
+    response = {"strategy": name,
+    "sumPriorityScore":sum,"stock":[{"ticker": name[0],
+    "priorityScore": name[1]} for name in stock_percent_list]}
+
+    print(response)
+    return response
 
 
 stock_suggestions = {

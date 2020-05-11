@@ -63,7 +63,7 @@ def func2(ticker):
 def invest():
         amount = 5000
         #pprint(amount)
-        choices = ["Ethical"]
+        choices = ["Ethical","Growth"]
         #pprint(choices)
         # choices = json.loads(choices)
 
