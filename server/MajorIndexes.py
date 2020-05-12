@@ -6,19 +6,13 @@ from flask import jsonify
 def get_major_indexes():
     session = requests.session()
     url = "https://financialmodelingprep.com/api/v3/quotes/index"
-    # print(url)
     response = session.get(url, timeout=15)
     all_indexes =response.json()
-    # for index in all_indexes:
-    #     if(index['symbol'] == '^GSPC'):
-    #         print(index)
-    # filtered = filter(major_index, all_indexes)
     result = []
     for index in all_indexes:
-        major_stocks = ['^GSPC', '^IXIC', '^DJI']
-        for i in range(0, 2):
+        major_stocks = ['^GSPC', '^IXIC', '^DJI', '^FCHI', '^RUITR', '^RUT', '^NSEBANK', '^RUA', '^GVZ', '^VXSLV']
+        for i in range(0, 10):
             if (index['symbol'] == major_stocks[i]):
                 result.append(index)
-    print(result)
     return result
 
