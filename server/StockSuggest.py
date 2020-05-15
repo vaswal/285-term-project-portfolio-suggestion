@@ -7,6 +7,24 @@ import requests
 
 symbol_map = {}
 
+def get_stock_price(stock_symbol):
+    print("stock_symbol: " + stock_symbol)
+    session = requests.session()
+    url = "https://financialmodelingprep.com/api/v3/quote/" + stock_symbol
+    # print (url)
+    response = session.get(url, timeout=15)
+    try:
+        stock_data = response.json()
+    except ValueError:
+        tempData = {'error_msg': 'Deserialization Fails.'}
+        return tempData
+
+    print("stock_data")
+    print(stock_data)
+    price = float(stock_data[0]['price'])
+    print("price")
+    print(price)
+    return price
 
 def get_month(stock_symbol):
     session = requests.session()
@@ -48,6 +66,9 @@ def modify_response(stock_percent_list, strategy_name):
     print("strategy_name")
     print(strategy_name)
     sum = 0
+
+    stock_prices = [(float(get_stock_price(name[1])), name[1]) for name in stock_percent_list]
+
     for name in stock_percent_list:
         print(name)
         sum = sum + name[0]
@@ -55,15 +76,16 @@ def modify_response(stock_percent_list, strategy_name):
     print("sum")
     print(sum)
     response = {"strategy": strategy_name,
-                "sumPriorityScore": sum, "stock": [{"ticker": name[0],
-                                                    "priorityScore": name[1]} for name in stock_percent_list]}
+                "sumPriorityScore": sum, "stock": [{"ticker": name[1],
+                                                    "priorityScore": name[0],
+                                                    "stockPrice": [item[0] for item in stock_prices if item[1] == name[1]][0]} for name in stock_percent_list]}
 
     print(response)
     return response
 
 
 stock_suggestions = {
-    'Ethical': ('GILD', 'GOOGL', 'NOV', 'PX', 'QCOM'),
+    'Ethical': ('GILD', 'GOOGL', 'NOV', 'QCOM'),
     'Growth': ('BIIB', 'AKRX', 'PSXP', 'IPGP', 'NFLX'),
     'Index': ('LNDC', 'LWAY', 'MDLZ', 'RAVE', 'RIBT'),
     'Quality': ('JNJ', 'KO', 'REGN', 'PEP', 'NKE'),
@@ -80,6 +102,7 @@ def get_stock_list(strategy):
     # print(stocks) 
     annaul_gain = [(float(get_change(get_52_week_gain(name))), name) for name in stocks]
     month_gain = [(float(get_month(name)), name) for name in stocks]
+
     stock_priority = []
     for x, y in zip(annaul_gain, month_gain):
         # print("x y")
