@@ -1,4 +1,4 @@
-import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO} from "../../redux/constants/actionTypes";
 import {HOSTNAME} from "../../constants/appConstants";
 
 import axios from 'axios';
@@ -39,3 +39,23 @@ export const getStockSuggestionDispatch = (returnData) => {
 
     return {type: GET_STOCK_SUGGESTION, payload: returnData}
 };
+
+export function getPortfolioInfo(payload) {
+    console.log("getPortfolioInfo payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.post(`http://${HOSTNAME}:5000/portfolio_info`, payload)
+            .then((response) => dispatch(getPortfolioInfoDispatch(response.data)));
+    }
+}
+
+export const getPortfolioInfoDispatch = (returnData) => {
+    console.log("Inside getPortfolioInfoDispatch");
+    console.log(returnData);
+
+    return {type: GET_PORTFOLIO_INFO, payload: returnData}
+};
+
+
+

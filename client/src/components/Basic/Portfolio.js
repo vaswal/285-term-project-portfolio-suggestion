@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, Card, ListGroup} from "react-bootstrap";
 import {Redirect} from 'react-router';
 import {getPortfolioCard, getStockList, getStrategyLogo} from "./UtilFunctions";
-import {getStockSuggestion} from "../../redux/actions/stockActions";
+import {getStockSuggestion, getPortfolioInfo} from "../../redux/actions/stockActions";
 import {connect} from "react-redux";
 
 
@@ -16,6 +16,7 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
     return {
         getStockSuggestion: (payload) => dispatch(getStockSuggestion(payload)),
+        getPortfolioInfo: (payload) => dispatch(getPortfolioInfo(payload)),
     };
 }
 
@@ -33,8 +34,11 @@ class Portfolio extends Component {
     }
 
     componentDidMount() {
+        console.log("names")
+        console.log(this.getMSLFromLocalStorage().map(strategy => strategy.name));
+
         const payload = {};
-        payload.choices = ["Ethical", "Growth"];
+        payload.choices = this.getMSLFromLocalStorage().map(strategy => strategy.name);
 
         // //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
         // axios.post(`http://${HOSTNAME}:5000/stock_suggestion`, payload)
@@ -43,11 +47,15 @@ class Portfolio extends Component {
         this.props.getStockSuggestion(payload);
     }
 
-
     getPortfolio() {
-        const renderTodos = this.props.stockSuggestions.map((suggestion, index) => {
-            return getPortfolioCard(suggestion.strategy, index, this.props.stockSuggestions)
+        console.log("this.props.stockSuggestions")
+        console.log(this.props.stockSuggestions)
+        if (this.props.stockSuggestions.length === 0) return null;
+
+        const renderTodos = this.props.stockSuggestions.suggestions.map((suggestion, index) => {
+            return getPortfolioCard(suggestion.strategy, index, this.props.stockSuggestions.division)
         });
+
 
         return <ListGroup horizontal>{renderTodos}</ListGroup>
     }
@@ -77,16 +85,16 @@ class Portfolio extends Component {
 
                 {this.getPortfolio()}
 
-                <div>
-                    <div className='rowC'>
-                        <div style={{marginLeft: "25%", marginRight: "15%"}}>
-                            {this.getMSLFromLocalStorage().length >= 1 && getPortfolioCard(this.getMSLFromLocalStorage()[0].name, 0)}
-                        </div>
-                        <div>
-                            {this.getMSLFromLocalStorage().length >= 2 && getPortfolioCard(this.getMSLFromLocalStorage()[1].name, 1)}
-                        </div>
-                    </div>
-                </div>
+                {/*<div>*/}
+                {/*    <div className='rowC'>*/}
+                {/*        <div style={{marginLeft: "25%", marginRight: "15%"}}>*/}
+                {/*            {this.getMSLFromLocalStorage().length >= 1 && getPortfolioCard(this.getMSLFromLocalStorage()[0].name, 0)}*/}
+                {/*        </div>*/}
+                {/*        <div>*/}
+                {/*            {this.getMSLFromLocalStorage().length >= 2 && getPortfolioCard(this.getMSLFromLocalStorage()[1].name, 1)}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         )
     }

@@ -1,8 +1,9 @@
-import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, SIGN_UP} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO} from "../../redux/constants/actionTypes";
 
 const initialState = {
     fullHistory: [],
     stockSuggestions: [],
+    portfolioInfo: [],
     signinSuccess: null,
     signinMessage: null,
     userType: null,
@@ -12,14 +13,15 @@ const initialState = {
 };
 
 const getMoneyDivision = (suggestions) => {
-
     const money = 5000;
 
     const totalSumPriorityScore = suggestions
         .map(suggestion => suggestion.sumPriorityScore)
         .reduce((prev, curr) => prev + curr, 0);
 
-    suggestions.division = [];
+    const ans = {};
+    ans.suggestions = suggestions
+    ans.division = [];
 
     suggestions.forEach(suggestion => {
         const division = {};
@@ -34,18 +36,45 @@ const getMoneyDivision = (suggestions) => {
             division.stock.push({ticker: stock.ticker, stockMoney: stockMoney, units: stockMoney / stock.stockPrice});
         })
 
-        suggestions.division.push(division);
+        ans.division.push(division);
     });
 
-    console.log("suggestions")
-    console.log(suggestions)
+    console.log("ans")
+    console.log(ans)
 
-    return suggestions;
+    return ans;
+}
+
+const getPortfolioValue = (dataWithDivision) => {
+    //dataWithDivision.suggestions.forEach()
+    //const stockPrice = dataWithDivision.suggestions.map(suggestion => suggestion.stock).reduce((a, b) => [...a, ...b], []);
+
+    const stockPriceMap = new Map()
+    dataWithDivision.suggestions.forEach(suggestion => {
+        suggestion.stock.forEach(s => {
+            stockPriceMap.set(s.ticker, s.stockPrice);
+        })
+    });
+
+    const stockDivision = dataWithDivision.division.map(divE => divE.stock.units * stockPriceMap.get(divE.ticker));
+
+    let sum = 0;
+    dataWithDivision.division.forEach(divE => {
+        divE.stock.forEach(s => {
+            sum += s.units * stockPriceMap.get(s.ticker);
+            console.log("sum: " + sum)
+        })
+    });
+
+    console.log("sum: " + sum)
+
+    //console.log("getPortfolioValue")
+    //console.log(stockDivision.map(stock => stock.units * stockPrice.find(o => o.ticker === stock.ticker)))
 
 }
 
 export default function stockReducer(state = initialState, action) {
-    console.log("signin auth reducer:");
+    console.log("stockReducer reducer:");
     console.log(action.payload);
 
     if (action.type === GET_FULL_HISTORY) {
@@ -53,14 +82,15 @@ export default function stockReducer(state = initialState, action) {
             fullHistory: [...state.fullHistory, action.payload],
         });
     } else if (action.type === GET_STOCK_SUGGESTION) {
+        const dataWithDivision = getMoneyDivision(action.payload);
+
         return Object.assign({}, state, {
-            stockSuggestions: getMoneyDivision(action.payload)
+            stockSuggestions: dataWithDivision, portfolioValue: getPortfolioValue(dataWithDivision)
         });
     }
-    if (action.type === SIGN_UP) {
+    if (action.type === GET_PORTFOLIO_INFO) {
         return Object.assign({}, state, {
-            signupSuccess: action.payload.id !== null ? true : false,
-            signupMessage: "",
+            portfolioInfo: action.payload,
         });
     }
 
