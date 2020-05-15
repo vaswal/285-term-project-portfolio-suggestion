@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-import { Redirect, Switch } from "react-router";
-import { Link, NavLink, Route } from "react-router-dom";
-import { Nav, Navbar, Button } from "react-bootstrap";
+import {Switch} from "react-router";
+import {Link, NavLink, Route} from "react-router-dom";
+import {Button, Nav, Navbar} from "react-bootstrap";
 import Portfolio from './Portfolio'
 import logo from "../../images/technology.png";
 import Buy from './BuyPage'
 import Trend from './Trend'
 import HomePage from './HomePage'
-
 
 
 class HomeBasic extends Component {
@@ -26,7 +25,7 @@ class HomeBasic extends Component {
 
                     <div className='rowC'>
                         <div>
-                            <img style={styles.logo} src={logo} alt="Quora" />
+                            <img style={styles.logo} src={logo} alt="Quora"/>
                         </div>
                         <div>
                             <h3 style={styles.message}>&nbsp;&nbsp;Spartan Gold Co.</h3>
@@ -34,7 +33,7 @@ class HomeBasic extends Component {
                         <Button variant="primary"
                                 style={{alignSelf: "right", marginTop: "10%", marginLeft: "30%"}}
                                 onClick={() => this.setState({isBasic: !this.state.isBasic})}>
-                            Toggle {this.state.isBasic === false ?  "Basic" : "Advanced"}
+                            Toggle {this.state.isBasic === false ? "Basic" : "Advanced"}
                         </Button>
                     </div>
                 </div>
@@ -57,10 +56,10 @@ class HomeBasic extends Component {
 
                 <div>
                     <Switch>
-                        <Route exact path='/basic/home/' component={HomePage} />
-                        <Route exact path='/basic/portfolio/' component={Portfolio} />
-                        <Route exact path='/basic/buy/' render={() => <Buy isBasic={this.state.isBasic}/>} />
-                        <Route exact path='/basic/trend/' component={Trend} />
+                        <Route exact path='/basic/home/' component={HomePage}/>
+                        <Route exact path='/basic/portfolio/' component={Portfolio}/>
+                        <Route exact path='/basic/buy/' render={() => <Buy isBasic={this.state.isBasic}/>}/>
+                        <Route exact path='/basic/trend/' component={Trend}/>
                     </Switch>
                 </div>
             </div>

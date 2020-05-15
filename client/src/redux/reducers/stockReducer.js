@@ -25,13 +25,13 @@ const getMoneyDivision = (suggestions) => {
         const division = {};
         division.stock = [];
 
-        const strategyMoney = money * suggestion.sumPriorityScore/totalSumPriorityScore;
+        const strategyMoney = money * suggestion.sumPriorityScore / totalSumPriorityScore;
         division.name = suggestion.strategy;
         division.money = strategyMoney;
 
         suggestion.stock.forEach(stock => {
-            const stockMoney = strategyMoney * (stock.priorityScore/suggestion.sumPriorityScore);
-            division.stock.push({ticker: stock.ticker, stockMoney});
+            const stockMoney = strategyMoney * (stock.priorityScore / suggestion.sumPriorityScore);
+            division.stock.push({ticker: stock.ticker, stockMoney: stockMoney, units: stockMoney / stock.stockPrice});
         })
 
         suggestions.division.push(division);

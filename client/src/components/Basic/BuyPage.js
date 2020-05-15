@@ -1,11 +1,5 @@
-import React, { Component } from 'react';
-import {Button, Card, Col, Form, ListGroup} from "react-bootstrap";
-import strategyLogo from "../../images/cart.png";
-import valueInvesting from "../../images/value-investing.png";
-import qualityInvesting from "../../images/quality-investing.png";
-import ethicalInvesting from "../../images/ethical-investing.png";
-import growthInvesting from "../../images/growth-investing.png";
-import indexInvesting from "../../images/index-investing.png";
+import React, {Component} from 'react';
+import {Button, Card, ListGroup} from "react-bootstrap";
 import HeikinAshiChart from "../Chart/HeikinAshi";
 import AreaChart from "../Chart/AreaChart";
 import {Redirect} from "react-router";
@@ -29,20 +23,21 @@ class BuyPage extends Component {
 
     getEmptyPortfolioCard = (index, portfolios) => {
         return <Card style={{width: '18rem'}}>
-            <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={require("../../images/strategy.png")}/>
+            <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top"
+                      src={require("../../images/strategy.png")}/>
             <Card.Body style={{alignSelf: "center"}}>
-                <Card.Title >Strategy {index + 1}</Card.Title>
+                <Card.Title>Strategy {index + 1}</Card.Title>
 
                 <button class="btn-primary btn-circle"
                         onClick={() => this.setState({showSelectionComponent: true, mainStrategiesIndex: index})}
-                        type="button">+</button>
+                        type="button">+
+                </button>
                 <br/>
                 {/*<br/>*/}
                 {/*<Button onClick={() => this.deleteStore(store)} type="button" variant="primary">Delete</Button>*/}
             </Card.Body>
         </Card>
     }
-
 
 
     getStrategyList = () => {
@@ -53,7 +48,7 @@ class BuyPage extends Component {
             return <ListGroup.Item
                 style={{margin: "1px", width: "15rem"}}
                 action
-                active={index === this.state.selectedStrategyIndex ? true: false}
+                active={index === this.state.selectedStrategyIndex ? true : false}
                 onClick={() => this.setState({selectedStrategyIndex: index})}
             >
                 {strategy + " Investing"}
@@ -70,8 +65,8 @@ class BuyPage extends Component {
 
             return <ListGroup.Item
                 style={{margin: "1px", width: "15rem"}}
-                active={index === this.state.selectedStepIndex ? true: false}
-                disabled={index === (index > this.state.selectedStepIndex ? true: (this.state.selectedStepIndex ? false: true))}
+                active={index === this.state.selectedStepIndex ? true : false}
+                disabled={index === (index > this.state.selectedStepIndex ? true : (this.state.selectedStepIndex ? false : true))}
                 onClick={() => this.setState({selectedStepIndex: index})}
             >
                 {step}
@@ -88,9 +83,14 @@ class BuyPage extends Component {
         // localStorage.setItem("mainStrategyList", JSON.stringify(mainStrategyList));
 
         this.setState({
-            mainStrategyList: [...this.state.mainStrategyList, {name: this.state.strategyList[this.state.selectedStrategyIndex], test: "test"}],
+            mainStrategyList: [...this.state.mainStrategyList, {
+                name: this.state.strategyList[this.state.selectedStrategyIndex],
+                test: "test"
+            }],
             selectedStepIndex: this.state.selectedStepIndex + 1
-        }, () => {console.log("this.state.mainStrategyList: " + this.state.mainStrategyList)})
+        }, () => {
+            console.log("this.state.mainStrategyList: " + this.state.mainStrategyList)
+        })
 
         //this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})
     }
@@ -146,7 +146,7 @@ class BuyPage extends Component {
                     </div>}
 
                     {this.state.selectedStepIndex === 1 &&
-                    <div style={{marginLeft: "10%", width:"90%"}}>
+                    <div style={{marginLeft: "10%", width: "90%"}}>
                         <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}}
                                 onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
                             Select strategy
@@ -156,13 +156,13 @@ class BuyPage extends Component {
                         {!this.props.isBasic ? <HeikinAshiChart ticker="VIAC"/> : <AreaChart ticker="VIAC"/>}
 
                         <h3>Albemarle Corp.</h3>
-                        {!this.props.isBasic  ? <HeikinAshiChart ticker="ALB"/> : <AreaChart ticker="ALB"/>}
+                        {!this.props.isBasic ? <HeikinAshiChart ticker="ALB"/> : <AreaChart ticker="ALB"/>}
 
 
                     </div>}
 
                     {this.state.selectedStepIndex === 2 &&
-                    <div style={{marginLeft: "10%", width:"90%"}}>
+                    <div style={{marginLeft: "10%", width: "90%"}}>
                         <h4>I confirm that I am selecting </h4>
                         <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}}
                                 onClick={() => this.addToMainStrategyList()}>

@@ -1,8 +1,4 @@
-import React, { Component } from 'react';
-import {Button, Card, Col, Form, ListGroup} from "react-bootstrap";
-import strategyLogo from "../../images/cart.png";
-import valueInvesting from "../../images/value-investing.png";
-import qualityInvesting from "../../images/quality-investing.png";
+import React, {Component} from 'react';
 import ChartComponent from "../Chart/AreaChart";
 
 

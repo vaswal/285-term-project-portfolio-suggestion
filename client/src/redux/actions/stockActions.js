@@ -1,4 +1,4 @@
-import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, SIGN_UP} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION} from "../../redux/constants/actionTypes";
 import {HOSTNAME} from "../../constants/appConstants";
 
 import axios from 'axios';
@@ -9,7 +9,10 @@ export function getFullHistory(payload) {
 
     return (dispatch) => {
         axios.get(`http://${HOSTNAME}:5000/fullHistory/${payload.ticker}`)
-            .then((response) => dispatch(getFullHistoryDispatch({ticker: payload.ticker, historicalData: response.data.historical})));
+            .then((response) => dispatch(getFullHistoryDispatch({
+                ticker: payload.ticker,
+                historicalData: response.data.historical
+            })));
     }
 }
 

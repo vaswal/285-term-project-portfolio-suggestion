@@ -1,17 +1,15 @@
-import React, { Component } from 'react';
-import {Button, ListGroup} from "react-bootstrap";
+import React, {Component} from 'react';
+import {Button, Card, ListGroup} from "react-bootstrap";
 import {Redirect} from 'react-router';
-import {getPortfolioCard} from "./UtilFunctions";
-import axios from "axios";
-import {HOSTNAME} from "../../constants/appConstants";
+import {getPortfolioCard, getStockList, getStrategyLogo} from "./UtilFunctions";
 import {getStockSuggestion} from "../../redux/actions/stockActions";
 import {connect} from "react-redux";
-
 
 
 function mapStateToProps(store) {
     return {
         stockSuggestions: store.stocks.stockSuggestions,
+        portfolioInfo: store.stocks.portfolioInfo,
     }
 }
 
@@ -36,7 +34,7 @@ class Portfolio extends Component {
 
     componentDidMount() {
         const payload = {};
-        payload.choices = ["Ethical","Growth"];
+        payload.choices = ["Ethical", "Growth"];
 
         // //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
         // axios.post(`http://${HOSTNAME}:5000/stock_suggestion`, payload)
@@ -46,10 +44,9 @@ class Portfolio extends Component {
     }
 
 
-
     getPortfolio() {
         const renderTodos = this.props.stockSuggestions.map((suggestion, index) => {
-            return getPortfolioCard(suggestion.strategy, index)
+            return getPortfolioCard(suggestion.strategy, index, this.props.stockSuggestions)
         });
 
         return <ListGroup horizontal>{renderTodos}</ListGroup>
@@ -64,9 +61,19 @@ class Portfolio extends Component {
 
                 <h1>Portfolio HomePage</h1>
                 {this.getMSLFromLocalStorage().length == 0 &&
-                <Button variant="primary" style={styles.button} onClick={() => this.setState({redirectToBuyPage: true})}>
+                <Button variant="primary" style={styles.button}
+                        onClick={() => this.setState({redirectToBuyPage: true})}>
                     Create Portfolio
                 </Button>}
+
+                <Card style={{width: '22rem'}}>
+                    <Card.Body>
+                        <Card.Title>Portfolio overview</Card.Title>
+                        <Card.Text>
+                            <b>Current value</b>
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
 
                 {this.getPortfolio()}
 

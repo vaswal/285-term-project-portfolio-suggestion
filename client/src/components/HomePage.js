@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Nav, Navbar} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
-import {Redirect} from "react-router";
 
 class HomePage extends Component {
     constructor(props) {
