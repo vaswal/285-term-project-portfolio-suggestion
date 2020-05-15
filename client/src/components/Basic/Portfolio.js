@@ -43,8 +43,9 @@ class Portfolio extends Component {
         //     .then(response => console.log(response))
 
         this.props.getStockSuggestion(payload);
-
     }
+
+
 
     getPortfolio() {
         const renderTodos = this.props.stockSuggestions.map((suggestion, index) => {
@@ -80,8 +81,6 @@ class Portfolio extends Component {
                     </div>
                 </div>
             </div>
-
-
         )
     }
 }

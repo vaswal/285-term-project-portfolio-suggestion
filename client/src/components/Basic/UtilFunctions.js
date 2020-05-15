@@ -35,7 +35,7 @@ export function getStrategyLogo(name) {
     return badge;
 }
 
-export function getPortfolioCard(name, index) {
+export function getPortfolioCard(name, index, suggestion) {
     //const name = this.state.mainStrategyList[index].name;
 
     return <Card style={{width: '22rem'}} key={index}>
@@ -45,7 +45,11 @@ export function getPortfolioCard(name, index) {
             <Card.Title >Strategy {index + 1} - {name}</Card.Title>
             <Card.Text>
                 <b>Portfolios</b> - TBD
+
+                {suggestion !== null && <b>Portfolios</b> - "TBD"}
             </Card.Text>
+
+
             {/*<Button onClick={() => this.handleShow(index)} type="button" variant="primary">Edit</Button>*/}
             {/*<br/>*/}
             {/*<br/>*/}
