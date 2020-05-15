@@ -65,18 +65,18 @@ def get_all(strategy_list):
 def modify_response(stock_percent_list, strategy_name):
     print("strategy_name")
     print(strategy_name)
-    sum = 0
 
     stock_prices = [(float(get_stock_price(name[1])), name[1]) for name in stock_percent_list]
 
-    for name in stock_percent_list:
-        print(name)
-        sum = sum + name[0]
+    negative = abs(sum([item[0] for item in stock_percent_list if item[0] < 0])) * 1.5
 
-    print("sum")
-    print(sum)
+    for i in range(len(stock_percent_list)):
+        stock_percent_list[i] = (stock_percent_list[i][0] + negative, stock_percent_list[i][1])
+
+    sumPriorityScore = sum([stock[0] for stock in stock_percent_list])
+
     response = {"strategy": strategy_name,
-                "sumPriorityScore": sum, "stock": [{"ticker": name[1],
+                "sumPriorityScore": sumPriorityScore, "stock": [{"ticker": name[1],
                                                     "priorityScore": name[0],
                                                     "stockPrice": [item[0] for item in stock_prices if item[1] == name[1]][0]} for name in stock_percent_list]}
 
@@ -100,11 +100,14 @@ def get_stock_list(strategy):
     # define the stocks for each strategy
     stocks = stock_suggestions[strategy]
     # print(stocks) 
-    annaul_gain = [(float(get_change(get_52_week_gain(name))), name) for name in stocks]
+    annual_gain = [(float(get_change(get_52_week_gain(name))), name) for name in stocks]
+
+
+
     month_gain = [(float(get_month(name)), name) for name in stocks]
 
     stock_priority = []
-    for x, y in zip(annaul_gain, month_gain):
+    for x, y in zip(annual_gain, month_gain):
         # print("x y")
         # print(x[0])
         # print(y[0])
