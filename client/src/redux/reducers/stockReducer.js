@@ -4,6 +4,7 @@ const initialState = {
     fullHistory: [],
     stockSuggestions: [],
     portfolioInfo: [],
+    portfolioValue: 0,
     signinSuccess: null,
     signinMessage: null,
     userType: null,
@@ -67,10 +68,7 @@ const getPortfolioValue = (dataWithDivision) => {
     });
 
     console.log("sum: " + sum)
-
-    //console.log("getPortfolioValue")
-    //console.log(stockDivision.map(stock => stock.units * stockPrice.find(o => o.ticker === stock.ticker)))
-
+    return sum
 }
 
 export default function stockReducer(state = initialState, action) {

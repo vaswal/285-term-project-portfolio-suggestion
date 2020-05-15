@@ -10,6 +10,7 @@ function mapStateToProps(store) {
     return {
         stockSuggestions: store.stocks.stockSuggestions,
         portfolioInfo: store.stocks.portfolioInfo,
+        portfolioValue: store.stocks.portfolioValue,
     }
 }
 
@@ -53,11 +54,22 @@ class Portfolio extends Component {
         if (this.props.stockSuggestions.length === 0) return null;
 
         const renderTodos = this.props.stockSuggestions.suggestions.map((suggestion, index) => {
-            return getPortfolioCard(suggestion.strategy, index, this.props.stockSuggestions.division)
+            return getPortfolioCard(suggestion.strategy, index, this.props.stockSuggestions.suggestions, this.props.stockSuggestions.division)
         });
 
 
-        return <ListGroup horizontal>{renderTodos}</ListGroup>
+        return <div>
+            <Card style={{width: '22rem'}}>
+                <Card.Body>
+                    <Card.Title>Portfolio overview</Card.Title>
+                    <Card.Text>
+                        <b>Current value - {this.props.portfolioValue}</b>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+
+            <ListGroup horizontal>{renderTodos}</ListGroup>
+        </div>
     }
 
     render() {
@@ -74,14 +86,7 @@ class Portfolio extends Component {
                     Create Portfolio
                 </Button>}
 
-                <Card style={{width: '22rem'}}>
-                    <Card.Body>
-                        <Card.Title>Portfolio overview</Card.Title>
-                        <Card.Text>
-                            <b>Current value</b>
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
+
 
                 {this.getPortfolio()}
 

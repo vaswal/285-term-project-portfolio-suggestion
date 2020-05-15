@@ -35,16 +35,18 @@ export function getStrategyLogo(name) {
     return badge;
 }
 
-export function getStockList(index, suggestions) {
+export function getStockList(index, division) {
+    console.log("getStockList")
+    console.log(division)
 
-    const renderTodos = suggestions.division[index].stock.map((s, index) => {
+    const renderTodos = division[index].stock.map((s, index) => {
         return <ListGroup.Item key={index}>Ticker - {s.ticker}  Units - {s.units.toFixed(2)}</ListGroup.Item>
     });
 
     return <ListGroup>{renderTodos}</ListGroup>
 }
 
-export function getPortfolioCard(name, index, suggestions=null) {
+export function getPortfolioCard(name, index, suggestions=null, division=null) {
     return <Card style={{width: '22rem'}} key={index}>
         <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={getStrategyLogo(name)}/>
 
@@ -52,7 +54,7 @@ export function getPortfolioCard(name, index, suggestions=null) {
             <Card.Title>Strategy {index + 1} - {name}</Card.Title>
             <Card.Text>
                 <b>Stock/ETF list</b>
-                {suggestions !== null && getStockList(index, suggestions)}
+                {suggestions !== null && getStockList(index, division)}
             </Card.Text>
         </Card.Body>
     </Card>
