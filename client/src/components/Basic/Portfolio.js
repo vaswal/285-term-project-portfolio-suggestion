@@ -1,7 +1,25 @@
 import React, { Component } from 'react';
-import {Button} from "react-bootstrap";
+import {Button, ListGroup} from "react-bootstrap";
 import {Redirect} from 'react-router';
 import {getPortfolioCard} from "./UtilFunctions";
+import axios from "axios";
+import {HOSTNAME} from "../../constants/appConstants";
+import {getStockSuggestion} from "../../redux/actions/stockActions";
+import {connect} from "react-redux";
+
+
+
+function mapStateToProps(store) {
+    return {
+        stockSuggestions: store.stocks.stockSuggestions,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getStockSuggestion: (payload) => dispatch(getStockSuggestion(payload)),
+    };
+}
 
 class Portfolio extends Component {
     constructor(props) {
@@ -16,6 +34,26 @@ class Portfolio extends Component {
         return mainStrategyList ? mainStrategyList : [];
     }
 
+    componentDidMount() {
+        const payload = {};
+        payload.choices = ["Ethical","Growth"];
+
+        // //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
+        // axios.post(`http://${HOSTNAME}:5000/stock_suggestion`, payload)
+        //     .then(response => console.log(response))
+
+        this.props.getStockSuggestion(payload);
+
+    }
+
+    getPortfolio() {
+        const renderTodos = this.props.stockSuggestions.map((suggestion, index) => {
+            return getPortfolioCard(suggestion.strategy, index)
+        });
+
+        return <ListGroup horizontal>{renderTodos}</ListGroup>
+    }
+
     render() {
         return (
             <div>
@@ -28,6 +66,8 @@ class Portfolio extends Component {
                 <Button variant="primary" style={styles.button} onClick={() => this.setState({redirectToBuyPage: true})}>
                     Create Portfolio
                 </Button>}
+
+                {this.getPortfolio()}
 
                 <div>
                     <div className='rowC'>
@@ -66,4 +106,4 @@ const styles = {
     }
 };
 
-export default Portfolio;
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);

@@ -1,8 +1,8 @@
-import {GET_FULL_HISTORY, SIGN_IN_ERROR, SIGN_UP} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, SIGN_UP} from "../../redux/constants/actionTypes";
 
 const initialState = {
     fullHistory: [],
-    signupMessage: null,
+    stockSuggestions: [],
     signinSuccess: null,
     signinMessage: null,
     userType: null,
@@ -19,10 +19,9 @@ export default function stockReducer(state = initialState, action) {
         return Object.assign({}, state, {
             fullHistory: [...state.fullHistory, action.payload],
         });
-    } else if (action.type === SIGN_IN_ERROR) {
+    } else if (action.type === GET_STOCK_SUGGESTION) {
         return Object.assign({}, state, {
-            signinSuccess: false,
-            signinMessage: "Login failed, incorrect username or password",
+            stockSuggestions: action.payload,
         });
     }
     if (action.type === SIGN_UP) {

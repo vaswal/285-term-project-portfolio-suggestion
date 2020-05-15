@@ -10,24 +10,24 @@ import React from "react";
 export function getStrategyLogo(name) {
     let badge = null;
 
-    switch (name.replace(" ", "")) {
-        case "ValueInvesting":
+    switch (name) {
+        case "Value":
             badge = valueInvesting;
             break;
 
-        case "QualityInvesting":
+        case "Quality":
             badge = qualityInvesting;
             break;
 
-        case "EthicalInvesting":
+        case "Ethical":
             badge = ethicalInvesting;
             break;
 
-        case "GrowthInvesting":
+        case "Growth":
             badge = growthInvesting;
             break;
 
-        case "IndexInvesting":
+        case "Index":
             badge = indexInvesting;
             break;
     }
@@ -38,7 +38,7 @@ export function getStrategyLogo(name) {
 export function getPortfolioCard(name, index) {
     //const name = this.state.mainStrategyList[index].name;
 
-    return <Card style={{width: '22rem'}}>
+    return <Card style={{width: '22rem'}} key={index}>
         <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={getStrategyLogo(name)}/>
 
         <Card.Body>

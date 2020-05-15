@@ -22,7 +22,7 @@ class BuyPage extends Component {
             selectedStrategyIndex: null,
             selectedStepIndex: 0,
             redirectToPortfolio: false,
-            strategyList: ["Ethical Investing", "Growth Investing", "Index Investing", "Quality Investing", "Value Investing"],
+            strategyList: ["Ethical", "Growth", "Index", "Quality", "Value"],
             stepsList: ["1. Select strategy", "2. Review", "3. Finish"],
         }
     }
@@ -56,7 +56,7 @@ class BuyPage extends Component {
                 active={index === this.state.selectedStrategyIndex ? true: false}
                 onClick={() => this.setState({selectedStrategyIndex: index})}
             >
-                {strategy}
+                {strategy + " Investing"}
             </ListGroup.Item>
         });
 
