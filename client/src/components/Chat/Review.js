@@ -3,21 +3,23 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 const Review = (props)  => {
-  const [state, setState] = useState({ name: '', stock: '',data:''});
-  
+  const [state, setState] = useState({ name: '', stock: ''});
+  const [data, setData] = useState({ resp: '' });
   useEffect(() => {
     const { steps } = props;
     const { name,stock } = steps;
     setState({ name,stock});
-    let url =`https://financialmodelingprep.com/api/v3/stock/real-time-price/${stock.value}`;
-    axios.get(url).then((response) => {
-    console.log(response.data);
-    setState({
-     data: response.data});
-    });
+    const fetchData = async () => {
+      const result = await axios(
+        `https://financialmodelingprep.com/api/v3/stock/real-time-price/${stock.value}`,
+      );
+      setData(result.data);
+    };
+     fetchData();
   }, [props])
 
-    const { name,stock,data } = state;
+    const { name,stock } = state;
+    const {resp} = data;
 
     return (
       <div style={{ width: '100%' }}>
@@ -25,15 +27,16 @@ const Review = (props)  => {
         <table>
           <tbody>
             <tr>
-              <td>Name</td>
+              <td>Name :</td>
               <td>{name.value}</td>
             </tr>
             <tr>
-              <td>Stock</td>
+              <td>Stock :</td>
               <td>{stock.value}</td>
             </tr>
             <tr>
-              <td>{data}</td>
+            <td>Price :</td>
+              <td>{data.price}</td>
             </tr>
           </tbody>
         </table>
