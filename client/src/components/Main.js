@@ -6,6 +6,7 @@ import Portfolio from "./Basic/Portfolio";
 import NavPage from "./Navigation/NavPage"
 import './Account/Account.css'
 
+
 class Main extends Component {
     render() {
         return (
