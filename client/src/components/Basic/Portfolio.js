@@ -34,6 +34,11 @@ class Portfolio extends Component {
         return mainStrategyList ? mainStrategyList : [];
     }
 
+    getStockSuggestions = () => {
+        const mainStrategyList = JSON.parse(localStorage.getItem("dataWithDivision"));
+        return mainStrategyList ? mainStrategyList : [];
+    }
+
     componentDidMount() {
         console.log("names")
         console.log(this.getMSLFromLocalStorage().map(strategy => strategy.name));
@@ -41,20 +46,20 @@ class Portfolio extends Component {
         const payload = {};
         payload.choices = this.getMSLFromLocalStorage().map(strategy => strategy.name);
 
-        // //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
-        // axios.post(`http://${HOSTNAME}:5000/stock_suggestion`, payload)
-        //     .then(response => console.log(response))
-
-        this.props.getStockSuggestion(payload);
+        if (!localStorage.getItem("dataWithDivision")) {
+            this.props.getStockSuggestion(payload);
+        }
     }
 
     getPortfolio() {
         console.log("this.props.stockSuggestions")
         console.log(this.props.stockSuggestions)
-        if (this.props.stockSuggestions.length === 0) return null;
+        const stockSuggestions = this.getStockSuggestions()
 
-        const renderTodos = this.props.stockSuggestions.suggestions.map((suggestion, index) => {
-            return getPortfolioCard(suggestion.strategy, index, this.props.stockSuggestions.suggestions, this.props.stockSuggestions.division)
+        if (stockSuggestions.length === 0) return null;
+
+        const renderTodos = stockSuggestions.suggestions.map((suggestion, index) => {
+            return getPortfolioCard(suggestion.strategy, index, stockSuggestions.suggestions, stockSuggestions.division)
         });
 
 
@@ -80,13 +85,13 @@ class Portfolio extends Component {
                 }}/>}
 
                 <h1>Portfolio HomePage</h1>
-                {this.getMSLFromLocalStorage().length == 0 &&
+                {this.getMSLFromLocalStorage().length === 0 &&
                 <Button variant="primary" style={styles.button}
                         onClick={() => this.setState({redirectToBuyPage: true})}>
                     Create Portfolio
                 </Button>}
 
-                {this.getPortfolio()}
+                {this.getMSLFromLocalStorage().length !== 0 && this.getPortfolio()}
             </div>
         )
     }
@@ -100,7 +105,8 @@ const styles = {
         alignItems: 'stretch',
     },
     button: {
-        marginLeft: "45%"
+        width: "10%",
+        marginRight: "45%"
     },
     storeList: {
         flex: 2,

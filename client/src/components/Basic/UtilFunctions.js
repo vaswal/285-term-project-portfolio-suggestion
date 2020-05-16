@@ -53,8 +53,8 @@ export function getPortfolioCard(name, index, suggestions=null, division=null) {
         <Card.Body>
             <Card.Title>Strategy {index + 1} - {name}</Card.Title>
             <Card.Text>
-                <b>Stock/ETF list</b>
-                {suggestions !== null && getStockList(index, division)}
+
+                {suggestions !== null && <b>Stock/ETF list</b> && getStockList(index, division)}
             </Card.Text>
         </Card.Body>
     </Card>
