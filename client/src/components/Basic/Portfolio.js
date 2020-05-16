@@ -1,7 +1,25 @@
-import React, { Component } from 'react';
-import {Button} from "react-bootstrap";
+import React, {Component} from 'react';
+import {Button, Card, ListGroup} from "react-bootstrap";
 import {Redirect} from 'react-router';
-import {getPortfolioCard} from "./UtilFunctions";
+import {getPortfolioCard, getStockList, getStrategyLogo} from "./UtilFunctions";
+import {getStockSuggestion, getPortfolioInfo} from "../../redux/actions/stockActions";
+import {connect} from "react-redux";
+
+
+function mapStateToProps(store) {
+    return {
+        stockSuggestions: store.stocks.stockSuggestions,
+        portfolioInfo: store.stocks.portfolioInfo,
+        portfolioValue: store.stocks.portfolioValue,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getStockSuggestion: (payload) => dispatch(getStockSuggestion(payload)),
+        getPortfolioInfo: (payload) => dispatch(getPortfolioInfo(payload)),
+    };
+}
 
 class Portfolio extends Component {
     constructor(props) {
@@ -16,6 +34,44 @@ class Portfolio extends Component {
         return mainStrategyList ? mainStrategyList : [];
     }
 
+    componentDidMount() {
+        console.log("names")
+        console.log(this.getMSLFromLocalStorage().map(strategy => strategy.name));
+
+        const payload = {};
+        payload.choices = this.getMSLFromLocalStorage().map(strategy => strategy.name);
+
+        // //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
+        // axios.post(`http://${HOSTNAME}:5000/stock_suggestion`, payload)
+        //     .then(response => console.log(response))
+
+        this.props.getStockSuggestion(payload);
+    }
+
+    getPortfolio() {
+        console.log("this.props.stockSuggestions")
+        console.log(this.props.stockSuggestions)
+        if (this.props.stockSuggestions.length === 0) return null;
+
+        const renderTodos = this.props.stockSuggestions.suggestions.map((suggestion, index) => {
+            return getPortfolioCard(suggestion.strategy, index, this.props.stockSuggestions.suggestions, this.props.stockSuggestions.division)
+        });
+
+
+        return <div>
+            <Card style={{width: '22rem'}}>
+                <Card.Body>
+                    <Card.Title>Portfolio overview</Card.Title>
+                    <Card.Text>
+                        <b>Current value - {this.props.portfolioValue}</b>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+
+            <ListGroup horizontal>{renderTodos}</ListGroup>
+        </div>
+    }
+
     render() {
         return (
             <div>
@@ -25,23 +81,13 @@ class Portfolio extends Component {
 
                 <h1>Portfolio HomePage</h1>
                 {this.getMSLFromLocalStorage().length == 0 &&
-                <Button variant="primary" style={styles.button} onClick={() => this.setState({redirectToBuyPage: true})}>
+                <Button variant="primary" style={styles.button}
+                        onClick={() => this.setState({redirectToBuyPage: true})}>
                     Create Portfolio
                 </Button>}
 
-                <div>
-                    <div className='rowC'>
-                        <div style={{marginLeft: "25%", marginRight: "15%"}}>
-                            {this.getMSLFromLocalStorage().length >= 1 && getPortfolioCard(this.getMSLFromLocalStorage()[0].name, 0)}
-                        </div>
-                        <div>
-                            {this.getMSLFromLocalStorage().length >= 2 && getPortfolioCard(this.getMSLFromLocalStorage()[1].name, 1)}
-                        </div>
-                    </div>
-                </div>
+                {this.getPortfolio()}
             </div>
-
-
         )
     }
 }
@@ -66,4 +112,4 @@ const styles = {
     }
 };
 
-export default Portfolio;
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
