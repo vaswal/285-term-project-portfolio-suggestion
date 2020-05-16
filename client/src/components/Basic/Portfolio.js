@@ -86,20 +86,7 @@ class Portfolio extends Component {
                     Create Portfolio
                 </Button>}
 
-
-
                 {this.getPortfolio()}
-
-                {/*<div>*/}
-                {/*    <div className='rowC'>*/}
-                {/*        <div style={{marginLeft: "25%", marginRight: "15%"}}>*/}
-                {/*            {this.getMSLFromLocalStorage().length >= 1 && getPortfolioCard(this.getMSLFromLocalStorage()[0].name, 0)}*/}
-                {/*        </div>*/}
-                {/*        <div>*/}
-                {/*            {this.getMSLFromLocalStorage().length >= 2 && getPortfolioCard(this.getMSLFromLocalStorage()[1].name, 1)}*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
         )
     }

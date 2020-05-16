@@ -4,6 +4,7 @@ const initialState = {
     fullHistory: [],
     stockSuggestions: [],
     portfolioInfo: [],
+    stocks: [],
     portfolioValue: 0,
     signinSuccess: null,
     signinMessage: null,
@@ -20,6 +21,7 @@ const getMoneyDivision = (suggestions) => {
         .map(suggestion => suggestion.sumPriorityScore)
         .reduce((prev, curr) => prev + curr, 0);
 
+    const stocks = new Set();
     const ans = {};
     ans.suggestions = suggestions
     ans.division = [];
@@ -35,6 +37,8 @@ const getMoneyDivision = (suggestions) => {
         suggestion.stock.forEach(stock => {
             const stockMoney = strategyMoney * (stock.priorityScore / suggestion.sumPriorityScore);
             division.stock.push({ticker: stock.ticker, stockMoney: stockMoney, units: stockMoney / stock.stockPrice});
+
+            stocks.add(stock.ticker);
         })
 
         ans.division.push(division);
@@ -43,21 +47,16 @@ const getMoneyDivision = (suggestions) => {
     console.log("ans")
     console.log(ans)
 
-    return ans;
+    return [ans, Array.from(stocks)];
 }
 
 const getPortfolioValue = (dataWithDivision) => {
-    //dataWithDivision.suggestions.forEach()
-    //const stockPrice = dataWithDivision.suggestions.map(suggestion => suggestion.stock).reduce((a, b) => [...a, ...b], []);
-
     const stockPriceMap = new Map()
     dataWithDivision.suggestions.forEach(suggestion => {
         suggestion.stock.forEach(s => {
             stockPriceMap.set(s.ticker, s.stockPrice);
         })
     });
-
-    const stockDivision = dataWithDivision.division.map(divE => divE.stock.units * stockPriceMap.get(divE.ticker));
 
     let sum = 0;
     dataWithDivision.division.forEach(divE => {
@@ -81,9 +80,14 @@ export default function stockReducer(state = initialState, action) {
         });
     } else if (action.type === GET_STOCK_SUGGESTION) {
         const dataWithDivision = getMoneyDivision(action.payload);
+        const portfolioValueAndStocks = getPortfolioValue(dataWithDivision[0])
+
+        localStorage.setItem("portfolioStockList", JSON.stringify(dataWithDivision[1]));
+
+
 
         return Object.assign({}, state, {
-            stockSuggestions: dataWithDivision, portfolioValue: getPortfolioValue(dataWithDivision)
+            stockSuggestions: dataWithDivision[0], portfolioValue: portfolioValueAndStocks, stocks: dataWithDivision[1]
         });
     }
     if (action.type === GET_PORTFOLIO_INFO) {
