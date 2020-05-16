@@ -2,19 +2,15 @@
   "0 debug pnpm:scope": {
     "selected": 1
   },
-  "1 debug pnpm": {
-    "isCaseSensitive": false,
-    "store": "/Users/vijendra4/.pnpm-store/2"
-  },
-  "2 error pnpm": {
+  "1 error pnpm": {
     "message": {
-      "code": "ERR_PNPM_NO_IMPORTER_MANIFEST"
+      "code": "ERR_PNPM_NO_IMPORTER_MANIFEST_FOUND"
     },
     "err": {
       "name": "Error",
-      "message": "No package.json found",
-      "code": "ERR_PNPM_NO_IMPORTER_MANIFEST",
-      "stack": "Error: No package.json found\n    at Object.handler [as default] (/usr/local/lib/node_modules/pnpm/lib/node_modules/@pnpm/plugin-commands-installation/lib/installDeps.js:87:19)"
+      "message": "No package.json (or package.yaml, or package.json5) was found in \"/Users/vijendra4/projects/spring-2020/285/285-term-project\".",
+      "code": "ERR_PNPM_NO_IMPORTER_MANIFEST_FOUND",
+      "stack": "Error: No package.json (or package.yaml, or package.json5) was found in \"/Users/vijendra4/projects/spring-2020/285/285-term-project\".\n    at readProjectManifest (/usr/local/lib/node_modules/pnpm/lib/node_modules/@pnpm/read-project-manifest/lib/index.js:20:11)\n    at async Object.readProjectManifestOnly (/usr/local/lib/node_modules/pnpm/lib/node_modules/@pnpm/read-project-manifest/lib/index.js:24:26)\n    at async Object.readProjectManifestOnly (/usr/local/lib/node_modules/pnpm/lib/node_modules/@pnpm/cli-utils/lib/readProjectManifest.js:12:22)\n    at async Object.handler (/usr/local/lib/node_modules/pnpm/lib/node_modules/@pnpm/plugin-commands-script-runners/lib/run.js:90:22)"
     }
   }
 }

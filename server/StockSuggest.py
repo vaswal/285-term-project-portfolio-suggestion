@@ -48,11 +48,11 @@ def get_month(stock_symbol):
 def get_all(strategy_list):
     stock_percent_list = {}
     response = []
-    if (len(strategy_list) == 1):
+    if len(strategy_list) == 1:
         print("get all....")
         name = strategy_list[0]
         stock_percent_list = get_stock_list(strategy_list[0])
-        return modify_response(stock_percent_list, name)
+        return [modify_response(stock_percent_list, name)]
     else:
         for strategy in strategy_list:
             print("get all")
