@@ -67,7 +67,7 @@ def modify_response(stock_percent_list,name):
 
 
 stock_suggestions = {
-        'Ethical': ('GILD', 'GOOGL', 'NOV', 'PX', 'QCOM'),
+        'Ethical': ('SHE', 'DSI', 'CRBN', 'SPYX', 'PORTX','TICRX'),
         'Growth': ('BIIB', 'AKRX', 'PSXP', 'IPGP', 'NFLX'),
         'Index': ('LNDC', 'LWAY', 'MDLZ', 'RAVE', 'RIBT'),
         'Quality': ('JNJ', 'KO', 'REGN', 'PEP', 'NKE'),
@@ -102,7 +102,7 @@ def get_52_week_gain(stock_symbol):
     print("stock_symbol")
     print(stock_symbol)
     session = requests.session()
-    url = "https://financialmodelingprep.com/api/v3/enterprise-value/"+stock_symbol+"?period=quarter"
+    url = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock_symbol+"?timeseries=365"
     # print(url)
     response = session.get(url, timeout=15)
     return response
@@ -118,7 +118,7 @@ def get_change(data):
         tempData = { 'error_msg' :'Deserialization Fails.'}
         return tempData
 
-    open = float(stock_data['enterpriseValues'][1]['Stock Price'])
-    close= float(stock_data['enterpriseValues'][0]['Stock Price'])
+    close = float(stock_data['historical'][0]['close'])
+    open = float(stock_data['historical'][364]['open'])
     change=close-open
     return change
