@@ -1,4 +1,4 @@
-import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND} from "../../redux/constants/actionTypes";
 
 const initialState = {
     fullHistory: [],
@@ -8,7 +8,8 @@ const initialState = {
     portfolioValue: 0,
     signinSuccess: null,
     signinMessage: null,
-    userType: null,
+    historicalData: [],
+    dateStockPriceList: [],
     token: null,
     userId: null,
     userActive: null
@@ -70,6 +71,49 @@ const getPortfolioValue = (dataWithDivision) => {
     return sum
 }
 
+
+const generateGraph = (historicalData) => {
+    let stockUnitList = [];
+    const dataWithDivision = localStorage.getItem("dataWithDivision") !== null ? JSON.parse(localStorage.getItem("dataWithDivision")): [];
+    dataWithDivision.division.forEach(divE => {
+        console.log("divE")
+        console.log(divE)
+        stockUnitList = [...stockUnitList, ...divE.stock]
+    });
+    console.log("stockUnitList")
+    console.log(stockUnitList)
+    const stockUnitMap = new Map(stockUnitList.map(i => [i.ticker, i.units]));
+
+    let dateStockPriceMap = new Map();
+
+    historicalData.forEach(stockData => {
+        const ticker = stockData.symbol
+        stockData.historical.forEach(dailyData => {
+            const date = dailyData.date;
+            if (dateStockPriceMap.has(date)) {
+                const dailyPortfolioValue = dateStockPriceMap.get(date);
+                dateStockPriceMap.set(date, dailyPortfolioValue + stockUnitMap.get(ticker) * dailyData.close);
+            } else {
+                dateStockPriceMap.set(date, stockUnitMap.get(ticker) * dailyData.close);
+            }
+        })
+    })
+
+    console.log("dateStockPriceMap")
+    console.log(dateStockPriceMap)
+
+    return dateStockPriceMap;
+}
+
+const mapToObj = (map) => {
+    let obj = {}
+    map.forEach(function(v, k){
+        obj[k] = v
+    })
+    return obj
+}
+
+
 export default function stockReducer(state = initialState, action) {
     console.log("stockReducer reducer:");
     console.log(action.payload);
@@ -83,16 +127,36 @@ export default function stockReducer(state = initialState, action) {
         const portfolioValueAndStocks = getPortfolioValue(dataWithDivision[0])
 
         localStorage.setItem("portfolioStockList", JSON.stringify(dataWithDivision[1]));
-
-
+        localStorage.setItem("dataWithDivision", JSON.stringify(dataWithDivision[0]));
 
         return Object.assign({}, state, {
             stockSuggestions: dataWithDivision[0], portfolioValue: portfolioValueAndStocks, stocks: dataWithDivision[1]
         });
-    }
-    if (action.type === GET_PORTFOLIO_INFO) {
+    } else if (action.type === GET_PORTFOLIO_INFO) {
         return Object.assign({}, state, {
             portfolioInfo: action.payload,
+        });
+    } else if (action.type === GET_STOCK_TREND) {
+        const historicalData = [...state.historicalData, ...action.payload.historicalStockList];
+        const generatedMap = generateGraph(historicalData);
+
+        console.log("generatedMap")
+        console.log(generatedMap)
+
+        console.log("JSON.stringify(generatedMap)")
+        console.log(JSON.stringify(mapToObj(generatedMap)))
+
+        let res = [];
+        generatedMap.forEach(function(val, key) {
+            res.push({ label: key, y: Math.trunc(val) });
+        });
+
+        console.log("res")
+        console.log(res)
+
+
+        return Object.assign({}, state, {
+            dateStockPriceList: res.reverse(), historicalData: historicalData
         });
     }
 

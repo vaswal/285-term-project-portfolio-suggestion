@@ -11,22 +11,29 @@ class ChartComponent extends Component {
     }
 
     componentDidMount() {
-        const payload = {};
-        payload.ticker = this.props.ticker;
+        if (this.props.ticker) {
+            const payload = {};
+            payload.ticker = this.props.ticker;
 
-        //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
-        axios.get(`http://${HOSTNAME}:5000/fullHistory/${this.props.ticker}`)
-            .then(data => data.data.historical)
-            .then((data) => {
-                for (let i = 0; i < data.length; i++) {
-                    let parts = data[i].date.match(/(\d+)/g);
-                    data[i].date = new Date(parts[0], parts[1] - 1, parts[2])
-                    //console.log("data[i]")
-                    //console.log(data[i])
-                }
+            //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
+            axios.get(`http://${HOSTNAME}:5000/fullHistory/${this.props.ticker}`)
+                .then(data => data.data.historical)
+                .then((data) => {
+                    for (let i = 0; i < data.length; i++) {
+                        let parts = data[i].date.match(/(\d+)/g);
+                        data[i].date = new Date(parts[0], parts[1] - 1, parts[2])
+                        //console.log("data[i]")
+                        //console.log(data[i])
+                    }
 
-                this.setState({data})
-            });
+                    this.setState({data})
+                });
+        } else {
+            console.log("this.props.data")
+            console.log(this.props.data)
+
+            this.setState({data: this.props.data})
+        }
     }
 
     render() {
