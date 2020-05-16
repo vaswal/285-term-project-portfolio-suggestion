@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Switch} from "react-router";
+import {Redirect, Switch} from "react-router";
 import {Link, NavLink, Route} from "react-router-dom";
 import {Button, Nav, Navbar} from "react-bootstrap";
 import Portfolio from './Portfolio'
@@ -13,13 +13,22 @@ class HomeBasic extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isBasic: true
+            isBasic: true,
+            redirectVar: false
         }
+    }
+
+    reset = () => {
+        localStorage.clear();
+        this.setState({redirectVar: true})
     }
 
     render() {
         return (
             <div>
+                {this.state.redirectVar === true && <Redirect to={{
+                    pathname: "/basic/home/",
+                }}/>}
 
                 <div style={styles.container}>
 
@@ -30,11 +39,21 @@ class HomeBasic extends Component {
                         <div>
                             <h3 style={styles.message}>&nbsp;&nbsp;Spartan Gold Co.</h3>
                         </div>
-                        <Button variant="primary"
-                                style={{alignSelf: "right", marginTop: "10%", marginLeft: "30%"}}
-                                onClick={() => this.setState({isBasic: !this.state.isBasic})}>
-                            Toggle {this.state.isBasic === false ? "Basic" : "Advanced"}
-                        </Button>
+
+                        <div className='rowC'>
+                            <Button variant="primary"
+                                    style={{alignSelf: "right", marginTop: "10%", marginLeft: "30%"}}
+                                    onClick={() => this.setState({isBasic: !this.state.isBasic})}>
+                                Toggle {this.state.isBasic === false ? "Basic" : "Advanced"}
+                            </Button>
+
+                            <Button variant="primary"
+                                    style={{alignSelf: "right", marginTop: "10%", marginLeft: "70%"}}
+                                    onClick={() => this.reset()}>
+                                Reset
+                            </Button>
+                        </div>
+
                     </div>
                 </div>
 

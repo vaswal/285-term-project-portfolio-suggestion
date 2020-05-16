@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Card, ListGroup} from "react-bootstrap";
+import {Button, Card, ListGroup, Form, Toast} from "react-bootstrap";
 import HeikinAshiChart from "../Chart/HeikinAshi";
 import AreaChart from "../Chart/AreaChart";
 import {Redirect} from "react-router";
@@ -15,6 +15,7 @@ class BuyPage extends Component {
             mainStrategiesIndex: null,
             selectedStrategyIndex: null,
             selectedStepIndex: 0,
+            isAmountCorrect: true,
             redirectToPortfolio: false,
             strategyList: ["Ethical", "Growth", "Index", "Quality", "Value"],
             stepsList: ["1. Select strategy", "2. Review", "3. Finish"],
@@ -77,11 +78,6 @@ class BuyPage extends Component {
     }
 
     addToMainStrategyList = () => {
-        // const mainStrategyList = JSON.parse(localStorage.getItem("mainStrategyList"))
-        // console.log("mainStrategyList: " + mainStrategyList)
-        // mainStrategyList.push({name: this.state.strategyList[this.state.selectedStrategyIndex], test: "test"})
-        // localStorage.setItem("mainStrategyList", JSON.stringify(mainStrategyList));
-
         this.setState({
             mainStrategyList: [...this.state.mainStrategyList, {
                 name: this.state.strategyList[this.state.selectedStrategyIndex],
@@ -90,11 +86,13 @@ class BuyPage extends Component {
         }, () => {
             console.log("this.state.mainStrategyList: " + this.state.mainStrategyList)
         })
-
-        //this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})
     }
 
     completePurchase = () => {
+        if (this.state.amount === null || this.state.amount < 5000) {
+            this.setState({isAmountCorrect: false});
+            return;
+        }
         localStorage.setItem("mainStrategyList", JSON.stringify(this.state.mainStrategyList));
         this.setState({redirectToPortfolio: true});
     }
@@ -141,8 +139,42 @@ class BuyPage extends Component {
                     state: {mainStrategyList: this.state.mainStrategyList}
                 }}/>}
 
+                {!this.state.isAmountCorrect && (
+                    <Toast
+                        onClose={() => this.setState({ isAmountCorrect: false })}
+                        show={!this.state.isAmountCorrect}
+                        style={{marginLeft:"45%"}}
+                    >
+                        <Toast.Header>
+                            <img
+                                src="holder.js/20x20?text=%20"
+                                className="rounded mr-2"
+                                alt=""
+                            />
+                            <strong className="mr-auto">Notification</strong>
+                        </Toast.Header>
+                        <Toast.Body>Amount should be great than or equal to 5000</Toast.Body>
+                    </Toast>
+                )}
+
                 <h1>Buy HomePage</h1>
                 <div>
+                    <Form style={{marginLeft:"45%", width:"15rem"}}>
+                        <Form.Group controlId="amount">
+                            <Form.Label>Amount (USD)</Form.Label>
+                            <Form.Control
+                                placeholder="Enter amount (USD)"
+                                isValid={this.state.amount>=5000}
+                                isInvalid={this.state.amount<5000}
+                                onChange={(e) => {console.log("amount: " + e.target.value)
+                                    this.setState({amount: e.target.value})}}
+                            />
+                            <Form.Text className="text-muted">
+                                Should be greater than or equal to 5000
+                            </Form.Text>
+                        </Form.Group>
+                    </Form>
+
                     <div className='rowC'>
                         <div style={{marginLeft: "25%", marginRight: "15%"}}>
                             {this.state.mainStrategyList.length >= 1 ? getPortfolioCard(this.state.mainStrategyList[0].name, 0) : this.getEmptyPortfolioCard(0)}
@@ -159,7 +191,7 @@ class BuyPage extends Component {
                     Complete and Buy
                 </Button>}
 
-                {this.state.showSelectionComponent && <div className='rowC' style={{marginTop: "5%"}}>
+                {this.state.showSelectionComponent && <div className='rowC' style={{marginTop: "5%", width: "100%"}}>
                     {this.getStepsList()}
 
                     {this.state.selectedStepIndex === 0 &&
