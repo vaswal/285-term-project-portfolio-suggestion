@@ -85,7 +85,6 @@ class BuyPage extends Component {
         this.setState({
             mainStrategyList: [...this.state.mainStrategyList, {
                 name: this.state.strategyList[this.state.selectedStrategyIndex],
-                test: "test"
             }],
             selectedStepIndex: this.state.selectedStepIndex + 1
         }, () => {
@@ -126,10 +125,10 @@ class BuyPage extends Component {
         //strategyList: ["Ethical", "Growth", "Index", "Quality", "Value"],
         const strategyStockMap = new Map();
         strategyStockMap.set("Ethical", ['SHE', 'DSI', 'CRBN', 'SPYX'])
-        strategyStockMap.set("Growth", ['DISCA', 'QQQ', 'VGT', 'XLV', 'VB','MDY','VIG'])
+        strategyStockMap.set("Growth", ['DISCA', 'QQQ', 'VGT', 'XLV', 'VB', 'MDY', 'VIG'])
         strategyStockMap.set("Index", ['VOO', 'SPY', 'IVV'])
-        strategyStockMap.set("Quality", ['QUAL', 'SPHQ', 'DGRW', 'QDF', 'JQUA','SDY','DGRS'])
-        strategyStockMap.set("Value", ['ALB', 'VIAC', 'BTI', 'CVS', 'AZO','VZ','ALXN'])
+        strategyStockMap.set("Quality", ['QUAL', 'SPHQ', 'DGRW', 'QDF', 'JQUA', 'SDY', 'DGRS'])
+        strategyStockMap.set("Value", ['ALB', 'VIAC', 'BTI', 'CVS', 'AZO', 'VZ', 'ALXN'])
 
         this.setState({strategyStockMap: strategyStockMap})
     }
@@ -138,7 +137,8 @@ class BuyPage extends Component {
         return (
             <div>
                 {this.state.redirectToPortfolio === true && <Redirect to={{
-                    pathname: "/basic/portfolio/"
+                    pathname: "/basic/portfolio/",
+                    state: {mainStrategyList: this.state.mainStrategyList}
                 }}/>}
 
                 <h1>Buy HomePage</h1>
@@ -154,7 +154,7 @@ class BuyPage extends Component {
                 </div>
 
                 {this.state.mainStrategyList.length >= 1 &&
-                <Button variant="primary" style={{marginRight: "50%", marginTop: "1%", width:"10rem"}}
+                <Button variant="primary" style={{marginRight: "50%", marginTop: "1%", width: "10rem"}}
                         onClick={() => this.completePurchase()}>
                     Complete and Buy
                 </Button>}
@@ -165,7 +165,7 @@ class BuyPage extends Component {
                     {this.state.selectedStepIndex === 0 &&
                     <div style={{marginLeft: "10%"}}>
                         {this.getStrategyList()}
-                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%", width:"10rem"}}
+                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%", width: "10rem"}}
                                 onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
                             Select strategy
                         </Button>
@@ -174,7 +174,7 @@ class BuyPage extends Component {
                     {this.state.selectedStepIndex === 1 &&
                     <div style={{marginLeft: "10%", width: "90%"}}>
                         <h2>{this.state.strategyList[this.state.selectedStrategyIndex]} Investing</h2>
-                        <Button variant="primary" style={{marginRight: "80%", marginTop: "1%", width:"10rem"}}
+                        <Button variant="primary" style={{marginRight: "80%", marginTop: "1%", width: "10rem"}}
                                 onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
                             Select strategy
                         </Button>
@@ -186,7 +186,7 @@ class BuyPage extends Component {
                     {this.state.selectedStepIndex === 2 &&
                     <div style={{marginLeft: "10%", width: "90%"}}>
                         <h4>I confirm that I am selecting </h4>
-                        <Button variant="primary" style={{marginRight: "80%", marginTop: "1%", width:"10rem"}}
+                        <Button variant="primary" style={{marginRight: "80%", marginTop: "1%", width: "10rem"}}
                                 onClick={() => this.addToMainStrategyList()}>
                             Agree and add
                         </Button>

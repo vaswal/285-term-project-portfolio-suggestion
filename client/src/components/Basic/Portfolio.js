@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Card, ListGroup} from "react-bootstrap";
 import {Redirect} from 'react-router';
-import {getPortfolioCard, getStockList, getStrategyLogo} from "./UtilFunctions";
-import {getStockSuggestion, getPortfolioInfo} from "../../redux/actions/stockActions";
+import {getPortfolioCard} from "./UtilFunctions";
+import {getPortfolioInfo, getStockSuggestion} from "../../redux/actions/stockActions";
 import {connect} from "react-redux";
 
 
@@ -30,6 +30,11 @@ class Portfolio extends Component {
     }
 
     getMSLFromLocalStorage = () => {
+        console.log("mainStrategyList");
+        if (this.props.location && this.props.location.state && this.props.location.state.mainStrategyList) {
+            return this.props.location.state.mainStrategyList;
+        }
+
         const mainStrategyList = JSON.parse(localStorage.getItem("mainStrategyList"));
         return mainStrategyList ? mainStrategyList : [];
     }
@@ -40,13 +45,21 @@ class Portfolio extends Component {
     }
 
     componentDidMount() {
+        console.log("componentDidMount mainStrategyList");
+        console.log(this.props.location);
+
         console.log("names")
         console.log(this.getMSLFromLocalStorage().map(strategy => strategy.name));
 
         const payload = {};
         payload.choices = this.getMSLFromLocalStorage().map(strategy => strategy.name);
 
-        if (!localStorage.getItem("dataWithDivision")) {
+        if (localStorage.getItem("dataWithDivision")) {
+            return
+        }
+
+        if (this.getMSLFromLocalStorage().length > 0) {
+            console.log("Calling getStockSuggestion")
             this.props.getStockSuggestion(payload);
         }
     }

@@ -40,13 +40,13 @@ export function getStockList(index, division) {
     console.log(division)
 
     const renderTodos = division[index].stock.map((s, index) => {
-        return <ListGroup.Item key={index}>Ticker - {s.ticker}  Units - {s.units.toFixed(2)}</ListGroup.Item>
+        return <ListGroup.Item key={index}>Ticker - {s.ticker} Units - {s.units.toFixed(2)}</ListGroup.Item>
     });
 
     return <ListGroup>{renderTodos}</ListGroup>
 }
 
-export function getPortfolioCard(name, index, suggestions=null, division=null) {
+export function getPortfolioCard(name, index, suggestions = null, division = null) {
     return <Card style={{width: '22rem'}} key={index}>
         <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={getStrategyLogo(name)}/>
 

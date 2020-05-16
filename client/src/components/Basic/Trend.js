@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import AreaChart from "../Chart/AreaChart";
-import axios from 'axios';
 import {connect} from "react-redux";
 import {getStockTrend,} from "../../redux/actions/stockActions";
 import CanvasJSReact from '../../lib/canvasjs.react';
@@ -34,17 +32,17 @@ class Trend extends Component {
 
         if (portfolioStockList === null) return;
 
-        const firstThree = Array.prototype.join.call(JSON.parse(portfolioStockList).slice(0,3),",");
-        const lastThree = Array.prototype.join.call(JSON.parse(portfolioStockList).slice(3,6),",");
+        const firstThree = Array.prototype.join.call(JSON.parse(portfolioStockList).slice(0, 3), ",");
+        const lastThree = Array.prototype.join.call(JSON.parse(portfolioStockList).slice(3, 6), ",");
 
         this.props.getStockTrend({stockList: firstThree})
         this.props.getStockTrend({stockList: lastThree})
     }
 
-        generateGraph() {
-            console.log("this.props.dateStockPriceList")
-            console.log(this.props.dateStockPriceList)
-        }
+    generateGraph() {
+        console.log("this.props.dateStockPriceList")
+        console.log(this.props.dateStockPriceList)
+    }
 
     addSymbols(e) {
         var suffixes = ["", "K", "M", "B"];
@@ -75,7 +73,7 @@ class Trend extends Component {
                 {this.generateGraph()}
 
                 {/*<CanvasJSChart options={options}/>*/}
-                <CanvasJSChart options = {options}/>
+                <CanvasJSChart options={options}/>
             </div>
         )
     }
