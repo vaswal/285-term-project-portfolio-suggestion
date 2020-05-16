@@ -101,9 +101,6 @@ def get_stock_list(strategy):
     stocks = stock_suggestions[strategy]
     # print(stocks) 
     annual_gain = [(float(get_change(get_52_week_gain(name))), name) for name in stocks]
-
-
-
     month_gain = [(float(get_month(name)), name) for name in stocks]
 
     stock_priority = []

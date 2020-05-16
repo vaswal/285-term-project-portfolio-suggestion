@@ -68,7 +68,6 @@ def func2(ticker):
 @app.route('/stock_suggestion', methods=['POST'])
 def invest():
     req_data = request.get_json()
-    amount = 5000
     print("req_data")
     print(req_data)
 
@@ -87,6 +86,28 @@ def invest():
     # #pprint(stocklist)
     # stockHistInfo = get_historical_strategy(stocklist, amount)
     return jsonify(stocklist)
+
+
+@app.route('/portfolio_info', methods=['POST'])
+def portfolio_info():
+    req_data = request.get_json()
+    choices = req_data['tickers']
+    print(choices)
+
+    session = requests.session()
+    url = "https://financialmodelingprep.com/api/v3/company/profile/" + ",".join(choices)
+    # print (url)
+    response = session.get(url, timeout=15)
+    try:
+        stock_data = response.json()
+    except ValueError:
+        tempData = {'error_msg': 'Deserialization Fails.'}
+        return tempData
+
+    print("stock_data")
+    print(stock_data)
+
+    return jsonify(stock_data)
 
 
 # @app.route('/selection', methods=['POST'])
