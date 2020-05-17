@@ -119,7 +119,7 @@ class Portfolio extends Component {
                     pathname: "/basic/buy/"
                 }}/>}
 
-                <h1>Portfolio HomePage</h1>
+                {/* <h1>Portfolio HomePage</h1> */}
                 {this.getMSLFromLocalStorage().length === 0 &&
                 <Button variant="primary" style={styles.button}
                         onClick={() => this.setState({redirectToBuyPage: true})}>

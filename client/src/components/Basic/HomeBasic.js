@@ -14,7 +14,8 @@ class HomeBasic extends Component {
         super(props);
         this.state = {
             isBasic: true,
-            redirectVar: false
+            redirectVar: false,
+            showChat: false
         }
     }
 
@@ -62,14 +63,14 @@ class HomeBasic extends Component {
                         <Navbar.Brand as={Link} to="/"></Navbar.Brand>
                         <Nav>
                             <Nav.Link as={NavLink} to="/basic/home/">
-                                HomeBasic
+                                Home
                             </Nav.Link>
                         </Nav>
 
                         <Nav className="ml-auto">
                             <Nav.Link as={NavLink} to='/basic/portfolio/'>Portfolio</Nav.Link>
                             <Nav.Link as={NavLink} to='/basic/trend/'>Trend</Nav.Link>
-                            <Nav.Link as={NavLink} to='/basic/chat/'>Chat</Nav.Link>
+                            <Nav.Link as={NavLink} to='/basic/chat/' onClick={() => this.setState({showChat: !this.state.showChat})}>Chat</Nav.Link>
                         </Nav>
                     </Navbar>
                 </div>
@@ -81,7 +82,7 @@ class HomeBasic extends Component {
                         <Route exact path='/basic/portfolio/' render={() => <Portfolio isBasic={this.state.isBasic}/>}/>
                         <Route exact path='/basic/buy/' render={() => <Buy isBasic={this.state.isBasic}/>}/>
                         <Route exact path='/basic/trend/' component={Trend}/>
-                        <Route exact path="/basic/chat" component={ChatInput}/>
+                        <Route exact path="/basic/chat" render={() => <ChatInput showChat={this.state.showChat}/>}/>
                     </Switch>
                 </div>
             </div>

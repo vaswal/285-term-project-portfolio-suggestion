@@ -6,7 +6,7 @@ export const GET_PORTFOLIO_INFO = "GET_PORTFOLIO_INFO";
 export const GET_STOCK_TREND = "GET_STOCK_TREND";
 export const CREATE_STORE = "CREATE_STORE";
 export const DELETE_STORE = "DELETE_STORE";
-
+export const GET_MAJOR_INDEX_DATA = "GET_MAJOR_INDEX_DATA";
 
 
 

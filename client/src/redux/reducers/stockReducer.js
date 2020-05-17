@@ -1,4 +1,4 @@
-import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND, GET_MAJOR_INDEX_DATA} from "../../redux/constants/actionTypes";
 
 const initialState = {
     fullHistory: [],
@@ -12,7 +12,8 @@ const initialState = {
     dateStockPriceList: [],
     token: null,
     userId: null,
-    userActive: null
+    userActive: null,
+    majorIndexData: []
 };
 
 const getMoneyDivision = (suggestions) => {
@@ -113,7 +114,6 @@ const mapToObj = (map) => {
     return obj
 }
 
-
 export default function stockReducer(state = initialState, action) {
     console.log("stockReducer reducer:");
     console.log(action.payload);
@@ -157,6 +157,14 @@ export default function stockReducer(state = initialState, action) {
 
         return Object.assign({}, state, {
             dateStockPriceList: res.reverse(), historicalData: historicalData
+        });
+    } else if (action.type === GET_MAJOR_INDEX_DATA) {
+        action.payload.indexData.forEach(data => {
+            data.change = Number(data.change) > 0 ? '+' + data.change : data.change;
+            data.changesPercentage = Number(data.changesPercentage) > 0 ? '+' + data.changesPercentage : data.changesPercentage;
+        })
+        return Object.assign({}, state, {
+            majorIndexData: action.payload.indexData
         });
     }
 

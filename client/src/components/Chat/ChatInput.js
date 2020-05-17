@@ -3,19 +3,19 @@ import SimpleForm from './SimpleForm';
 import './Chat.css';
 
 const ChatInput = (props) => {
-    let [showChat, setShowChat] = useState(false);
+    // let [showChat, setShowChat] = useState(true);
 
-    const startChat = () => {
-        setShowChat(true);
-    }
-    const hideChat = () => {
-        setShowChat(false);
-    }
+    // const startChat = () => {
+    //     setShowChat(true);
+    // }
+    // const hideChat = () => {
+    //     setShowChat(false);
+    // }
 
 
     return (
         <div>
-            <div className="main">
+            {/* <div className="main">
                 <div className="content">
                     <div>
                         <h1>How can we help??.....</h1>
@@ -27,9 +27,9 @@ const ChatInput = (props) => {
 
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div className="bot">
-                <div style={{display: showChat ? "" : "none"}}>
+                <div style={{display: props.showChat ? "" : "none"}}>
                     <SimpleForm></SimpleForm>
                 </div>
                 {/* <div> {showChat ? <SimpleForm></SimpleForm> : null} </div> */}

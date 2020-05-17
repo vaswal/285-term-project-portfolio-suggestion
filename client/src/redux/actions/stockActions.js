@@ -1,4 +1,4 @@
-import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND, GET_MAJOR_INDEX_DATA} from "../../redux/constants/actionTypes";
 import {HOSTNAME} from "../../constants/appConstants";
 
 import axios from 'axios';
@@ -74,8 +74,16 @@ export const getStockTrendDispatch = (returnData) => {
     return {type: GET_STOCK_TREND, payload: returnData}
 };
 
+export function getMajorIndicesData() {
+    return (dispatch) => {
+        axios.get(`http://${HOSTNAME}:5000/major_indexes`)
+            .then((response) => dispatch(getMajorIndicesDispatch({
+                indexData: response.data
+            })));
+    }
+}
 
-
-
-
+export const getMajorIndicesDispatch = (returnData) => {
+    return {type: GET_MAJOR_INDEX_DATA, payload: returnData}
+};
 
