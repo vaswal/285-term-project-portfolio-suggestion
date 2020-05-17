@@ -16,3 +16,5 @@ def get_major_indexes():
                 result.append(index)
     return result
 
+def get_nasdaq():
+    session = requests.session

@@ -1,10 +1,10 @@
+from flask import Flask
+from flask import render_template
+from flask import request,jsonify,Response
 from StockSuggest import get_all
 from MajorIndexes import get_major_indexes
 import requests
-from flask import Flask
-from flask import request, jsonify
-
-from StockSuggest import get_all
+from flask_cors import CORS
 
 app = Flask(__name__)
 # CORS(app)
