@@ -107,6 +107,9 @@ class HomePage extends Component {
                 <Carousel activeIndex={this.state.index} onSelect={this.handleSelect} interval={null}>
                     {indexData}
                 </Carousel>
+				<h2>NASDAQ Composite (^IXIC)</h2>
+				<h3>Nasdaq GIDS - Nasdaq GIDS Real Time Price. Currency in USD</h3>
+
                 <ChartComponent />
             </div>
         )
