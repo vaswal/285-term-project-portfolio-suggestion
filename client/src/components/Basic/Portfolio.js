@@ -33,8 +33,12 @@ class Portfolio extends Component {
 
     getMSLFromLocalStorage = () => {
         console.log("mainStrategyList");
-        if (this.props.location && this.props.location.state && this.props.location.state.mainStrategyList) {
-            return this.props.location.state.mainStrategyList;
+        // if (this.props.location && this.props.location.state && this.props.location.state.mainStrategyList) {
+        //     return this.props.location.state.mainStrategyList;
+        // }
+
+        if (this.props.props && this.props.props.location && this.props.props.location.state && this.props.props.location.state.mainStrategyList) {
+            return this.props.props.location.state.mainStrategyList;
         }
 
         const mainStrategyList = JSON.parse(localStorage.getItem("mainStrategyList"));
