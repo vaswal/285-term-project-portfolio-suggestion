@@ -1,64 +1,63 @@
-from flask import Flask
-from flask import render_template
-from flask import request,jsonify,Response
-# from StockSuggest import get_all
+from StockSuggest import get_all
 from MajorIndexes import get_major_indexes
-import json
-import datetime
 import requests
-# from flask_cors import CORS
+from flask import Flask
+from flask import request, jsonify
+
+from StockSuggest import get_all
 
 app = Flask(__name__)
 # CORS(app)
 
 
-
 @app.route('/fullHistory/<ticker>', methods=['GET'])
 def func1(ticker):
     if ticker:
-         #Inputs
+        # Inputs
         stock_symbol = ticker
         session = requests.session()
-        url = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock_symbol
-        print (url)
+        url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + stock_symbol
+        print(url)
         response = session.get(url, timeout=15)
 
-        try: 
+        try:
             stock_data = response.json()
 
         except ValueError:
-            tempData = { 'error_msg' :'Deserialization Fails.'}
+            tempData = {'error_msg': 'Deserialization Fails.'}
             return tempData
-        
+
         return stock_data
 
     else:
         return "Error: No id field provided. Please specify an id."
 
-    
+
 @app.route('/companyProfile/<ticker>', methods=['GET'])
 def func2(ticker):
     if ticker:
-         #Inputs
+        # Inputs
         stock_symbol = ticker
         session = requests.session()
-        url = "https://financialmodelingprep.com/api/v3/company/profile/"+stock_symbol
-        print (url)
+        url = "https://financialmodelingprep.com/api/v3/company/profile/" + stock_symbol
+        print(url)
         response = session.get(url, timeout=15)
 
-        try: 
+        try:
             company_profile = response.json()
 
         except ValueError:
-            tempData = { 'error_msg' :'Deserialization Fails.'}
+            tempData = {'error_msg': 'Deserialization Fails.'}
             return tempData
-        
+
         return company_profile
 
     else:
-        return "Error: No id field provided. Please specify an id."  
+        return "Error: No id field provided. Please specify an id."
 
-# @app.route('/stock_suggestion', methods=['POST'])
+    # @app.route('/stock_suggestion', methods=['POST'])
+
+
 # def invest():
 #     choices = request.args.get('choices', '')
 #     print("choices")
@@ -66,21 +65,51 @@ def func2(ticker):
 #     stocklist = get_all(choices)
 #     return jsonify(stocklist)
 
-    
+
 @app.route('/stock_suggestion', methods=['POST'])
 def invest():
-        req_data = request.get_json()
-        amount = 5000
-        #pprint(amount)
-        choices = req_data['choices']
-        print(choices)
-        # choices = json.loads(choices)
+    req_data = request.get_json()
+    print("req_data")
+    print(req_data)
 
-        stocklist = get_all(choices)
-        # stockInfo = get_strategy(stocklist, amount)
-        # #pprint(stocklist)
-        # stockHistInfo = get_historical_strategy(stocklist, amount)
-        return jsonify(stocklist)
+    print("request.form")
+    print(request.form)
+
+    print("request")
+    print(request)
+
+    choices = req_data['choices']
+    print(choices)
+    # choices = json.loads(choices)
+
+    stocklist = get_all(choices)
+    # stockInfo = get_strategy(stocklist, amount)
+    # #pprint(stocklist)
+    # stockHistInfo = get_historical_strategy(stocklist, amount)
+    return jsonify(stocklist)
+
+
+@app.route('/portfolio_info', methods=['POST'])
+def portfolio_info():
+    req_data = request.get_json()
+    choices = req_data['tickers']
+    print(choices)
+
+    session = requests.session()
+    url = "https://financialmodelingprep.com/api/v3/company/profile/" + ",".join(choices)
+    # print (url)
+    response = session.get(url, timeout=15)
+    try:
+        stock_data = response.json()
+    except ValueError:
+        tempData = {'error_msg': 'Deserialization Fails.'}
+        return tempData
+
+    print("stock_data")
+    print(stock_data)
+
+    return jsonify(stock_data)
+
 
 # @app.route('/selection', methods=['POST'])
 # def return_data():
@@ -121,7 +150,7 @@ def invest():
 def major_index():
     majorList = get_major_indexes()
     return jsonify(majorList)
-       
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

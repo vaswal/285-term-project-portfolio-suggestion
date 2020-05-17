@@ -1,11 +1,5 @@
-import React, { Component } from 'react';
-import {Button, Card, Col, Form, ListGroup} from "react-bootstrap";
-import strategyLogo from "../../images/cart.png";
-import valueInvesting from "../../images/value-investing.png";
-import qualityInvesting from "../../images/quality-investing.png";
-import ethicalInvesting from "../../images/ethical-investing.png";
-import growthInvesting from "../../images/growth-investing.png";
-import indexInvesting from "../../images/index-investing.png";
+import React, {Component} from 'react';
+import {Button, Card, ListGroup, Form, Toast} from "react-bootstrap";
 import HeikinAshiChart from "../Chart/HeikinAshi";
 import AreaChart from "../Chart/AreaChart";
 import {Redirect} from "react-router";
@@ -15,34 +9,36 @@ class BuyPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            //mainStrategyList: localStorage.getItem("mainStrategyList") !== null ? JSON.parse(localStorage.getItem("mainStrategyList")) : [],
             mainStrategyList: [],
+            amount: null,
             showSelectionComponent: null,
             mainStrategiesIndex: null,
             selectedStrategyIndex: null,
             selectedStepIndex: 0,
+            isAmountCorrect: true,
             redirectToPortfolio: false,
-            strategyList: ["Ethical Investing", "Growth Investing", "Index Investing", "Quality Investing", "Value Investing"],
+            strategyList: ["Ethical", "Growth", "Index", "Quality", "Value"],
             stepsList: ["1. Select strategy", "2. Review", "3. Finish"],
         }
     }
 
     getEmptyPortfolioCard = (index, portfolios) => {
         return <Card style={{width: '18rem'}}>
-            <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={require("../../images/strategy.png")}/>
+            <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top"
+                      src={require("../../images/strategy.png")}/>
             <Card.Body style={{alignSelf: "center"}}>
-                <Card.Title >Strategy {index + 1}</Card.Title>
+                <Card.Title>Strategy {index + 1}</Card.Title>
 
                 <button class="btn-primary btn-circle"
                         onClick={() => this.setState({showSelectionComponent: true, mainStrategiesIndex: index})}
-                        type="button">+</button>
+                        type="button">+
+                </button>
                 <br/>
                 {/*<br/>*/}
                 {/*<Button onClick={() => this.deleteStore(store)} type="button" variant="primary">Delete</Button>*/}
             </Card.Body>
         </Card>
     }
-
 
 
     getStrategyList = () => {
@@ -53,10 +49,10 @@ class BuyPage extends Component {
             return <ListGroup.Item
                 style={{margin: "1px", width: "15rem"}}
                 action
-                active={index === this.state.selectedStrategyIndex ? true: false}
+                active={index === this.state.selectedStrategyIndex ? true : false}
                 onClick={() => this.setState({selectedStrategyIndex: index})}
             >
-                {strategy}
+                {strategy + " Investing"}
             </ListGroup.Item>
         });
 
@@ -70,8 +66,8 @@ class BuyPage extends Component {
 
             return <ListGroup.Item
                 style={{margin: "1px", width: "15rem"}}
-                active={index === this.state.selectedStepIndex ? true: false}
-                disabled={index === (index > this.state.selectedStepIndex ? true: (this.state.selectedStepIndex ? false: true))}
+                active={index === this.state.selectedStepIndex ? true : false}
+                disabled={index === (index > this.state.selectedStepIndex ? true : (this.state.selectedStepIndex ? false : true))}
                 onClick={() => this.setState({selectedStepIndex: index})}
             >
                 {step}
@@ -82,22 +78,41 @@ class BuyPage extends Component {
     }
 
     addToMainStrategyList = () => {
-        // const mainStrategyList = JSON.parse(localStorage.getItem("mainStrategyList"))
-        // console.log("mainStrategyList: " + mainStrategyList)
-        // mainStrategyList.push({name: this.state.strategyList[this.state.selectedStrategyIndex], test: "test"})
-        // localStorage.setItem("mainStrategyList", JSON.stringify(mainStrategyList));
-
         this.setState({
-            mainStrategyList: [...this.state.mainStrategyList, {name: this.state.strategyList[this.state.selectedStrategyIndex], test: "test"}],
+            mainStrategyList: [...this.state.mainStrategyList, {
+                name: this.state.strategyList[this.state.selectedStrategyIndex],
+            }],
             selectedStepIndex: this.state.selectedStepIndex + 1
-        }, () => {console.log("this.state.mainStrategyList: " + this.state.mainStrategyList)})
-
-        //this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})
+        }, () => {
+            console.log("this.state.mainStrategyList: " + this.state.mainStrategyList)
+        })
     }
 
     completePurchase = () => {
+        console.log("completePurchase")
+        console.log(this.state.amount)
+        if (this.state.amount === null || this.state.amount < 5000) {
+            this.setState({isAmountCorrect: false});
+            return;
+        }
         localStorage.setItem("mainStrategyList", JSON.stringify(this.state.mainStrategyList));
         this.setState({redirectToPortfolio: true});
+    }
+
+    getStockGraphs = (strategy) => {
+        if (!this.state.strategyStockMap) return null;
+
+        const renderTodos = this.state.strategyStockMap.get(strategy).map((stock, index) => {
+            console.log("stock")
+            console.log(stock)
+
+            return <ListGroup.Item>
+                <h3>{stock}</h3>
+                {!this.props.isBasic ? <HeikinAshiChart ticker={stock}/> : <AreaChart ticker={stock}/>}
+            </ListGroup.Item>
+        });
+
+        return <ListGroup as="ul" style={{width: "100%"}}>{renderTodos}</ListGroup>
     }
 
     componentDidMount() {
@@ -106,17 +121,62 @@ class BuyPage extends Component {
         if (localStorage.getItem("mainStrategyList") == null) {
             localStorage.setItem("mainStrategyList", JSON.stringify([]));
         }
+
+        //strategyList: ["Ethical", "Growth", "Index", "Quality", "Value"],
+        const strategyStockMap = new Map();
+        strategyStockMap.set("Ethical", ['SHE', 'DSI', 'CRBN', 'SPYX'])
+        strategyStockMap.set("Growth", ['DISCA', 'QQQ', 'VGT', 'XLV', 'VB', 'MDY', 'VIG'])
+        strategyStockMap.set("Index", ['VOO', 'SPY', 'IVV'])
+        strategyStockMap.set("Quality", ['QUAL', 'SPHQ', 'DGRW', 'QDF', 'JQUA', 'SDY', 'DGRS'])
+        strategyStockMap.set("Value", ['ALB', 'VIAC', 'BTI', 'CVS', 'AZO', 'VZ', 'ALXN'])
+
+        this.setState({strategyStockMap: strategyStockMap})
     }
 
     render() {
         return (
             <div>
                 {this.state.redirectToPortfolio === true && <Redirect to={{
-                    pathname: "/basic/portfolio/"
+                    pathname: "/basic/portfolio/",
+                    state: {mainStrategyList: this.state.mainStrategyList}
                 }}/>}
+
+                {!this.state.isAmountCorrect && (
+                    <Toast
+                        onClose={() => this.setState({ isAmountCorrect: true })}
+                        show={!this.state.isAmountCorrect}
+                        style={{marginLeft:"45%"}}
+                    >
+                        <Toast.Header>
+                            <img
+                                src="holder.js/20x20?text=%20"
+                                className="rounded mr-2"
+                                alt=""
+                            />
+                            <strong className="mr-auto">Notification</strong>
+                        </Toast.Header>
+                        <Toast.Body>Amount should be great than or equal to 5000</Toast.Body>
+                    </Toast>
+                )}
 
                 <h1>Buy HomePage</h1>
                 <div>
+                    <Form style={{marginLeft:"45%", width:"15rem"}}>
+                        <Form.Group controlId="amount">
+                            <Form.Label>Amount (USD)</Form.Label>
+                            <Form.Control
+                                placeholder="Enter amount (USD)"
+                                isValid={this.state.amount>=5000}
+                                isInvalid={this.state.amount<5000}
+                                onChange={(e) => {console.log("amount: " + e.target.value)
+                                    this.setState({amount: e.target.value})}}
+                            />
+                            <Form.Text className="text-muted">
+                                Should be greater than or equal to 5000
+                            </Form.Text>
+                        </Form.Group>
+                    </Form>
+
                     <div className='rowC'>
                         <div style={{marginLeft: "25%", marginRight: "15%"}}>
                             {this.state.mainStrategyList.length >= 1 ? getPortfolioCard(this.state.mainStrategyList[0].name, 0) : this.getEmptyPortfolioCard(0)}
@@ -128,43 +188,39 @@ class BuyPage extends Component {
                 </div>
 
                 {this.state.mainStrategyList.length >= 1 &&
-                <Button variant="primary" style={{marginLeft: "50%", marginTop: "1%"}}
+                <Button variant="primary" style={{marginRight: "50%", marginTop: "1%", width: "10rem"}}
                         onClick={() => this.completePurchase()}>
                     Complete and Buy
                 </Button>}
 
-                {this.state.showSelectionComponent && <div className='rowC' style={{marginTop: "5%"}}>
+                {this.state.showSelectionComponent && <div className='rowC' style={{marginTop: "5%", width: "100%"}}>
                     {this.getStepsList()}
 
                     {this.state.selectedStepIndex === 0 &&
                     <div style={{marginLeft: "10%"}}>
                         {this.getStrategyList()}
-                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}}
+                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%", width: "10rem"}}
                                 onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
                             Select strategy
                         </Button>
                     </div>}
 
                     {this.state.selectedStepIndex === 1 &&
-                    <div style={{marginLeft: "10%", width:"90%"}}>
-                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}}
+                    <div style={{marginLeft: "10%", width: "90%"}}>
+                        <h2>{this.state.strategyList[this.state.selectedStrategyIndex]} Investing</h2>
+                        <Button variant="primary" style={{marginRight: "80%", marginTop: "1%", width: "10rem"}}
                                 onClick={() => this.setState({selectedStepIndex: this.state.selectedStepIndex + 1})}>
                             Select strategy
                         </Button>
 
-                        <h3>ViacomCBS</h3>
-                        {!this.props.isBasic ? <HeikinAshiChart ticker="VIAC"/> : <AreaChart ticker="VIAC"/>}
-
-                        <h3>Albemarle Corp.</h3>
-                        {!this.props.isBasic  ? <HeikinAshiChart ticker="ALB"/> : <AreaChart ticker="ALB"/>}
-
+                        {this.getStockGraphs(this.state.strategyList[this.state.selectedStrategyIndex])}
 
                     </div>}
 
                     {this.state.selectedStepIndex === 2 &&
-                    <div style={{marginLeft: "10%", width:"90%"}}>
+                    <div style={{marginLeft: "10%", width: "90%"}}>
                         <h4>I confirm that I am selecting </h4>
-                        <Button variant="primary" style={{marginLeft: "20%", marginTop: "10%"}}
+                        <Button variant="primary" style={{marginRight: "80%", marginTop: "1%", width: "10rem"}}
                                 onClick={() => this.addToMainStrategyList()}>
                             Agree and add
                         </Button>
