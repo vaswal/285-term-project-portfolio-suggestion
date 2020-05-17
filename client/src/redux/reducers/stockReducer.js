@@ -134,7 +134,7 @@ export default function stockReducer(state = initialState, action) {
         });
     } else if (action.type === GET_PORTFOLIO_INFO) {
         return Object.assign({}, state, {
-            portfolioInfo: action.payload,
+            portfolioInfo: [...state.portfolioInfo, ...action.payload.companyProfiles]
         });
     } else if (action.type === GET_STOCK_TREND) {
         const historicalData = [...state.historicalData, ...action.payload.historicalStockList];

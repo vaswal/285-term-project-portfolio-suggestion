@@ -11,6 +11,8 @@ function mapStateToProps(store) {
         stockSuggestions: store.stocks.stockSuggestions,
         portfolioInfo: store.stocks.portfolioInfo,
         portfolioValue: store.stocks.portfolioValue,
+        stocks: store.stocks.stocks,
+
     }
 }
 
@@ -51,14 +53,34 @@ class Portfolio extends Component {
         console.log("names")
         console.log(this.getMSLFromLocalStorage().map(strategy => strategy.name));
 
-        const payload = {};
-        payload.choices = this.getMSLFromLocalStorage().map(strategy => strategy.name);
+        let portfolioStockList;
+        if (JSON.parse(localStorage.getItem("portfolioStockList"))) {
+            portfolioStockList = JSON.parse(localStorage.getItem("portfolioStockList"));
+        } else {
+            portfolioStockList = this.props.stocks
+        }
+
+        if (portfolioStockList && portfolioStockList.length > 3) {
+            const firstThree = portfolioStockList.slice(0, 3);
+            const lastThree = portfolioStockList.slice(3, 6);
+
+            this.props.getPortfolioInfo({tickers: firstThree});
+            this.props.getPortfolioInfo({tickers: lastThree});
+
+        } else if (portfolioStockList && portfolioStockList.length <= 3) {
+            this.props.getPortfolioInfo({tickers: JSON.parse(localStorage.getItem("portfolioStockList"))});
+        }
 
         if (localStorage.getItem("dataWithDivision")) {
             return
         }
 
         if (this.getMSLFromLocalStorage().length > 0) {
+            const payload = {};
+            payload.choices = this.getMSLFromLocalStorage().map(strategy => strategy.name);
+            console.log("payload.choices")
+            console.log(payload.choices)
+
             console.log("Calling getStockSuggestion")
             this.props.getStockSuggestion(payload);
         }
@@ -72,7 +94,7 @@ class Portfolio extends Component {
         if (stockSuggestions.length === 0) return null;
 
         const renderTodos = stockSuggestions.suggestions.map((suggestion, index) => {
-            return getPortfolioCard(suggestion.strategy, index, stockSuggestions.suggestions, stockSuggestions.division)
+            return getPortfolioCard(suggestion.strategy, index, stockSuggestions.suggestions, stockSuggestions.division, this.props.portfolioInfo, this.props.isBasic)
         });
 
 

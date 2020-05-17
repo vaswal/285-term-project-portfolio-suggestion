@@ -9,8 +9,8 @@ class BuyPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            //mainStrategyList: localStorage.getItem("mainStrategyList") !== null ? JSON.parse(localStorage.getItem("mainStrategyList")) : [],
             mainStrategyList: [],
+            amount: null,
             showSelectionComponent: null,
             mainStrategiesIndex: null,
             selectedStrategyIndex: null,
@@ -89,6 +89,8 @@ class BuyPage extends Component {
     }
 
     completePurchase = () => {
+        console.log("completePurchase")
+        console.log(this.state.amount)
         if (this.state.amount === null || this.state.amount < 5000) {
             this.setState({isAmountCorrect: false});
             return;
@@ -141,7 +143,7 @@ class BuyPage extends Component {
 
                 {!this.state.isAmountCorrect && (
                     <Toast
-                        onClose={() => this.setState({ isAmountCorrect: false })}
+                        onClose={() => this.setState({ isAmountCorrect: true })}
                         show={!this.state.isAmountCorrect}
                         style={{marginLeft:"45%"}}
                     >
