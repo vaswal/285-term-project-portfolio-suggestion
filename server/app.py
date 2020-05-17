@@ -6,11 +6,11 @@ from flask_cors import CORS,cross_origin
 from StockSuggest import get_all
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/": {"origins": "http://13.52.97.186:3000/"}})
+cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000/"}})
 
 
 @app.route('/fullHistory/<ticker>', methods=['GET'])
-@cross_origin(origin='13.52.97.186')
+@cross_origin(origin='localhost')
 def func1(ticker):
     if ticker:
         # Inputs
@@ -34,7 +34,7 @@ def func1(ticker):
 
 
 @app.route('/companyProfile/<ticker>', methods=['GET'])
-@cross_origin(origin='13.52.97.186')
+@cross_origin(origin='localhost')
 def func2(ticker):
     if ticker:
         # Inputs
@@ -68,7 +68,7 @@ def func2(ticker):
 
 
 @app.route('/stock_suggestion', methods=['POST'])
-@cross_origin(origin='13.52.97.186')
+@cross_origin(origin='localhost')
 def invest():
     req_data = request.get_json()
     print("req_data")
@@ -92,6 +92,7 @@ def invest():
 
 
 @app.route('/portfolio_info', methods=['POST'])
+@cross_origin(origin='localhost')
 def portfolio_info():
     req_data = request.get_json()
     choices = req_data['tickers']
