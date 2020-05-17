@@ -3,7 +3,7 @@ import qualityInvesting from "../../images/quality-investing.png";
 import ethicalInvesting from "../../images/ethical-investing.png";
 import growthInvesting from "../../images/growth-investing.png";
 import indexInvesting from "../../images/index-investing.png";
-import {Card, ListGroup, Badge} from "react-bootstrap";
+import {Badge, Card, ListGroup} from "react-bootstrap";
 import React from "react";
 
 
@@ -87,17 +87,18 @@ export function getStockList(index, division, portfolioInfo, isBasic) {
 
         renderTodos = division[index].stock.map((s, index) => {
             return <ListGroup.Item key={index}>
-            <img src={portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.image} />
-            <br/>
-            {getOrderStatusBadge("Name")} - {portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.companyName}
-            <br/>
-            {getOrderStatusBadge("Ticker")} - {s.ticker}
-            <br/>
-            {getOrderStatusBadge("Units")} - {s.units.toFixed(2)}
-            <br/>
-            {getOrderStatusBadge("Description")} - {portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.description}
-            <br/>
-            {getOrderStatusBadge("Website")} - <a href={portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.website}>{portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.website}</a>
+                <img src={portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.image}/>
+                <br/>
+                {getOrderStatusBadge("Name")} - {portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.companyName}
+                <br/>
+                {getOrderStatusBadge("Ticker")} - {s.ticker}
+                <br/>
+                {getOrderStatusBadge("Units")} - {s.units.toFixed(2)}
+                <br/>
+                {getOrderStatusBadge("Description")} - {portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.description}
+                <br/>
+                {getOrderStatusBadge("Website")} - <a
+                href={portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.website}>{portfolioInfo.filter(p => p.symbol === s.ticker)[0].profile.website}</a>
             </ListGroup.Item>
         });
     }
@@ -105,8 +106,8 @@ export function getStockList(index, division, portfolioInfo, isBasic) {
     return <ListGroup>{renderTodos}</ListGroup>
 }
 
-export function getPortfolioCard(name, index, suggestions = null, division = null, portfolioInfo= null, isBasic= null) {
-    return <Card style={{width: '30rem', marginLeft:"5%"}} key={index}>
+export function getPortfolioCard(name, index, suggestions = null, division = null, portfolioInfo = null, isBasic = null) {
+    return <Card style={{width: '30rem', marginLeft: "5%"}} key={index}>
         <Card.Img style={{width: '10rem', alignSelf: "center"}} variant="top" src={getStrategyLogo(name)}/>
 
         <Card.Body>

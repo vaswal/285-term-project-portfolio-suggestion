@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, Card, ListGroup} from "react-bootstrap";
 import {Redirect} from 'react-router';
 import {getPortfolioCard} from "./UtilFunctions";
-import {getPortfolioInfo, getStockSuggestion, getPortfolioValue} from "../../redux/actions/stockActions";
+import {getPortfolioInfo, getPortfolioValue, getStockSuggestion} from "../../redux/actions/stockActions";
 import {connect} from "react-redux";
 
 
