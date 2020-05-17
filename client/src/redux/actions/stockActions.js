@@ -1,4 +1,4 @@
-import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND, GET_MAJOR_INDEX_DATA} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND, GET_MAJOR_INDEX_DATA, GET_PORTFOLIO_VALUE} from "../../redux/constants/actionTypes";
 import {HOSTNAME} from "../../constants/appConstants";
 
 import axios from 'axios';
@@ -73,6 +73,25 @@ export const getStockTrendDispatch = (returnData) => {
 
     return {type: GET_STOCK_TREND, payload: returnData}
 };
+
+export function getPortfolioValue(payload) {
+    console.log("getPortfolioValue payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.get(`https://financialmodelingprep.com/api/v3/quote/${payload.stockList}`)
+            .then((response) => dispatch(getPortfolioValueDispatch({responseData: response.data, stockSuggestions: payload.stockSuggestions})));
+    }
+}
+
+export const getPortfolioValueDispatch = (returnData) => {
+    console.log("Inside getPortfolioValueDispatch");
+    console.log(returnData);
+
+    return {type: GET_PORTFOLIO_VALUE, payload: returnData}
+};
+
+
 
 export function getMajorIndicesData() {
     return (dispatch) => {

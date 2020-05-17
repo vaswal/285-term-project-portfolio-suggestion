@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Card, ListGroup, Form, Toast} from "react-bootstrap";
+import {Button, Card, Form, ListGroup, Toast} from "react-bootstrap";
 import HeikinAshiChart from "../Chart/HeikinAshi";
 import AreaChart from "../Chart/AreaChart";
 import {Redirect} from "react-router";
@@ -90,12 +90,14 @@ class BuyPage extends Component {
 
     completePurchase = () => {
         console.log("completePurchase")
-        console.log(this.state.amount)
+
         if (this.state.amount === null || this.state.amount < 5000) {
             this.setState({isAmountCorrect: false});
             return;
         }
+
         localStorage.setItem("mainStrategyList", JSON.stringify(this.state.mainStrategyList));
+        localStorage.setItem("amount", this.state.amount);
         this.setState({redirectToPortfolio: true});
     }
 
@@ -138,14 +140,14 @@ class BuyPage extends Component {
             <div>
                 {this.state.redirectToPortfolio === true && <Redirect to={{
                     pathname: "/basic/portfolio/",
-                    state: {mainStrategyList: this.state.mainStrategyList}
+                    state: {mainStrategyList: this.state.mainStrategyList, refreshPage: true}
                 }}/>}
 
                 {!this.state.isAmountCorrect && (
                     <Toast
-                        onClose={() => this.setState({ isAmountCorrect: true })}
+                        onClose={() => this.setState({isAmountCorrect: true})}
                         show={!this.state.isAmountCorrect}
-                        style={{marginLeft:"45%"}}
+                        style={{marginLeft: "45%"}}
                     >
                         <Toast.Header>
                             <img
@@ -161,15 +163,17 @@ class BuyPage extends Component {
 
                 <h1>Buy HomePage</h1>
                 <div>
-                    <Form style={{marginLeft:"45%", width:"15rem"}}>
+                    <Form style={{marginLeft: "45%", width: "15rem"}}>
                         <Form.Group controlId="amount">
                             <Form.Label>Amount (USD)</Form.Label>
                             <Form.Control
                                 placeholder="Enter amount (USD)"
-                                isValid={this.state.amount>=5000}
-                                isInvalid={this.state.amount<5000}
-                                onChange={(e) => {console.log("amount: " + e.target.value)
-                                    this.setState({amount: e.target.value})}}
+                                isValid={this.state.amount >= 5000}
+                                isInvalid={this.state.amount < 5000}
+                                onChange={(e) => {
+                                    console.log("amount: " + e.target.value)
+                                    this.setState({amount: e.target.value})
+                                }}
                             />
                             <Form.Text className="text-muted">
                                 Should be greater than or equal to 5000

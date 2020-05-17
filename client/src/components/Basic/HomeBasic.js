@@ -79,7 +79,8 @@ class HomeBasic extends Component {
                     <Switch>
                         <Route exact path='/basic/home/' component={HomePage}/>
                         {/*<Route exact path='/basic/portfolio/' component={Portfolio}/>*/}
-                        <Route exact path='/basic/portfolio/' render={() => <Portfolio isBasic={this.state.isBasic}/>}/>
+                        <Route exact path='/basic/portfolio/'
+                               render={(props) => <Portfolio isBasic={this.state.isBasic} props={props}/>}/>
                         <Route exact path='/basic/buy/' render={() => <Buy isBasic={this.state.isBasic}/>}/>
                         <Route exact path='/basic/trend/' component={Trend}/>
                         <Route exact path="/basic/chat" render={() => <ChatInput showChat={this.state.showChat}/>}/>

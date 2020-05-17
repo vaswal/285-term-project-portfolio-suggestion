@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, Card, ListGroup} from "react-bootstrap";
 import {Redirect} from 'react-router';
 import {getPortfolioCard} from "./UtilFunctions";
-import {getPortfolioInfo, getStockSuggestion} from "../../redux/actions/stockActions";
+import {getPortfolioInfo, getPortfolioValue, getStockSuggestion} from "../../redux/actions/stockActions";
 import {connect} from "react-redux";
 
 
@@ -12,7 +12,6 @@ function mapStateToProps(store) {
         portfolioInfo: store.stocks.portfolioInfo,
         portfolioValue: store.stocks.portfolioValue,
         stocks: store.stocks.stocks,
-
     }
 }
 
@@ -20,6 +19,7 @@ function mapDispatchToProps(dispatch) {
     return {
         getStockSuggestion: (payload) => dispatch(getStockSuggestion(payload)),
         getPortfolioInfo: (payload) => dispatch(getPortfolioInfo(payload)),
+        getPortfolioValue: (payload) => dispatch(getPortfolioValue(payload)),
     };
 }
 
@@ -54,11 +54,30 @@ class Portfolio extends Component {
         console.log(this.getMSLFromLocalStorage().map(strategy => strategy.name));
 
         let portfolioStockList;
-        if (JSON.parse(localStorage.getItem("portfolioStockList"))) {
-            portfolioStockList = JSON.parse(localStorage.getItem("portfolioStockList"));
+
+        const localStoragePortfolioStockList = JSON.parse(localStorage.getItem("portfolioStockList"))
+        if (localStoragePortfolioStockList !== null && localStoragePortfolioStockList.length > 0) {
+            console.log("Portfolio.componentDidMount localStorage")
+            console.log(localStoragePortfolioStockList)
+            portfolioStockList = localStoragePortfolioStockList;
         } else {
+            console.log("Portfolio.componentDidMount this.props.stocks")
+            console.log(this.props.stocks)
             portfolioStockList = this.props.stocks
         }
+
+        console.log("Portfolio.componentDidMount portfolioStockList")
+        console.log(portfolioStockList)
+
+
+        console.log("Portfolio.componentDidMount portfolioStockList")
+        console.log(portfolioStockList)
+
+        const payload = {};
+        payload.stockSuggestions = JSON.parse(localStorage.getItem("dataWithDivision"));
+        payload.stockList = Array.prototype.join.call(portfolioStockList, ",");
+
+        this.props.getPortfolioValue(payload)
 
         if (portfolioStockList && portfolioStockList.length > 3) {
             const firstThree = portfolioStockList.slice(0, 3);
@@ -97,7 +116,6 @@ class Portfolio extends Component {
             return getPortfolioCard(suggestion.strategy, index, stockSuggestions.suggestions, stockSuggestions.division, this.props.portfolioInfo, this.props.isBasic)
         });
 
-
         return <div>
             <Card style={{width: '22rem'}}>
                 <Card.Body>
@@ -113,8 +131,15 @@ class Portfolio extends Component {
     }
 
     render() {
+        console.log("this.props.props: ")
+        console.log(this.props.props)
+        console.log("this.props.location: " + this.props.location)
+
         return (
             <div>
+                {/*{this.props.props && this.props.props.location && this.props.props.location.state && this.props.props.location.state.refreshPage &&*/}
+                {/*window.location.reload(false) && window.history.replaceState({}, '', "/basic/portfolio/")}*/}
+
                 {this.state.redirectToBuyPage === true && <Redirect to={{
                     pathname: "/basic/buy/"
                 }}/>}
