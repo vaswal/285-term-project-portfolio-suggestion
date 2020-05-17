@@ -1,15 +1,16 @@
 import requests
 from flask import Flask
 from flask import request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 
 from StockSuggest import get_all
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/": {"origins": "http://13.52.97.186:3000/"}})
 
 
 @app.route('/fullHistory/<ticker>', methods=['GET'])
+@cross_origin(origin='13.52.97.186')
 def func1(ticker):
     if ticker:
         # Inputs
@@ -33,6 +34,7 @@ def func1(ticker):
 
 
 @app.route('/companyProfile/<ticker>', methods=['GET'])
+@cross_origin(origin='13.52.97.186')
 def func2(ticker):
     if ticker:
         # Inputs
@@ -66,6 +68,7 @@ def func2(ticker):
 
 
 @app.route('/stock_suggestion', methods=['POST'])
+@cross_origin(origin='13.52.97.186')
 def invest():
     req_data = request.get_json()
     print("req_data")
