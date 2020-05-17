@@ -90,12 +90,14 @@ class BuyPage extends Component {
 
     completePurchase = () => {
         console.log("completePurchase")
-        console.log(this.state.amount)
+
         if (this.state.amount === null || this.state.amount < 5000) {
             this.setState({isAmountCorrect: false});
             return;
         }
+
         localStorage.setItem("mainStrategyList", JSON.stringify(this.state.mainStrategyList));
+        localStorage.setItem("amount", this.state.amount);
         this.setState({redirectToPortfolio: true});
     }
 
@@ -138,7 +140,7 @@ class BuyPage extends Component {
             <div>
                 {this.state.redirectToPortfolio === true && <Redirect to={{
                     pathname: "/basic/portfolio/",
-                    state: {mainStrategyList: this.state.mainStrategyList}
+                    state: {mainStrategyList: this.state.mainStrategyList, refreshPage: true}
                 }}/>}
 
                 {!this.state.isAmountCorrect && (

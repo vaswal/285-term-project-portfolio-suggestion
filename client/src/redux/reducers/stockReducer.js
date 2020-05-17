@@ -1,4 +1,4 @@
-import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND} from "../../redux/constants/actionTypes";
+import {GET_FULL_HISTORY, GET_STOCK_SUGGESTION, GET_PORTFOLIO_INFO, GET_STOCK_TREND, GET_PORTFOLIO_VALUE} from "../../redux/constants/actionTypes";
 
 const initialState = {
     fullHistory: [],
@@ -16,7 +16,7 @@ const initialState = {
 };
 
 const getMoneyDivision = (suggestions) => {
-    const money = 5000;
+    const money = parseInt(localStorage.getItem("amount"), 10);
 
     const totalSumPriorityScore = suggestions
         .map(suggestion => suggestion.sumPriorityScore)
@@ -51,7 +51,7 @@ const getMoneyDivision = (suggestions) => {
     return [ans, Array.from(stocks)];
 }
 
-const getPortfolioValue = (dataWithDivision) => {
+const getPortfolioValueDuringDivision = (dataWithDivision) => {
     const stockPriceMap = new Map()
     dataWithDivision.suggestions.forEach(suggestion => {
         suggestion.stock.forEach(s => {
@@ -61,6 +61,24 @@ const getPortfolioValue = (dataWithDivision) => {
 
     let sum = 0;
     dataWithDivision.division.forEach(divE => {
+        divE.stock.forEach(s => {
+            sum += s.units * stockPriceMap.get(s.ticker);
+            console.log("sum: " + sum)
+        })
+    });
+
+    console.log("sum: " + sum)
+    return sum
+}
+
+const getPortfolioValue = (responseData, stockSuggestions) => {
+    const stockPriceMap = new Map()
+    responseData.forEach(stock => {
+        stockPriceMap.set(stock.symbol, stock.price);
+    });
+
+    let sum = 0;
+    stockSuggestions.division.forEach(divE => {
         divE.stock.forEach(s => {
             sum += s.units * stockPriceMap.get(s.ticker);
             console.log("sum: " + sum)
@@ -124,7 +142,7 @@ export default function stockReducer(state = initialState, action) {
         });
     } else if (action.type === GET_STOCK_SUGGESTION) {
         const dataWithDivision = getMoneyDivision(action.payload);
-        const portfolioValueAndStocks = getPortfolioValue(dataWithDivision[0])
+        const portfolioValueAndStocks = getPortfolioValueDuringDivision(dataWithDivision[0])
 
         localStorage.setItem("portfolioStockList", JSON.stringify(dataWithDivision[1]));
         localStorage.setItem("dataWithDivision", JSON.stringify(dataWithDivision[0]));
@@ -154,9 +172,13 @@ export default function stockReducer(state = initialState, action) {
         console.log("res")
         console.log(res)
 
-
         return Object.assign({}, state, {
             dateStockPriceList: res.reverse(), historicalData: historicalData
+        });
+    } else if (action.type === GET_PORTFOLIO_VALUE) {
+
+        return Object.assign({}, state, {
+            portfolioValue: getPortfolioValue(action.payload.responseData, action.payload.stockSuggestions)
         });
     }
 
