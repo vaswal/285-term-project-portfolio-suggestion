@@ -3,6 +3,7 @@ import ChartComponent from "../Chart/Nasdaq";
 import { Carousel, Card, Row, Col } from 'react-bootstrap';
 import { getMajorIndicesData } from "../../redux/actions/stockActions";
 import {connect} from "react-redux";
+import './home.css';
 
 class HomePage extends Component {
     constructor(props) {
@@ -20,11 +21,13 @@ class HomePage extends Component {
     }
 
     handleSelect = (selectedIndex, e) => {
-        this.setState({
-            ...this.state,
-            index: selectedIndex,
-            i: this.state.i + 3
-        });
+        if((this.state.i + 4) <= this.props.majorIndexData.length) {
+            this.setState({
+                ...this.state,
+                index: selectedIndex < 2 ? selectedIndex : 0,
+                i: this.state.i + 4
+            });
+        }
     };
 
     generateDataPoints(noOfDps) {
@@ -39,7 +42,7 @@ class HomePage extends Component {
     }
 
     render() {
-        const indexData = this.props.majorIndexData.slice(this.state.i, this.state.i + 3).map((data, index) => {
+        const indexData = this.props.majorIndexData.slice(this.state.i, this.state.i + 4).map((data, index) => {
             return (
                 <Carousel.Item key={index}>
                     <Row>
@@ -77,6 +80,18 @@ class HomePage extends Component {
                             <Card.Text style = {{ fontFamily: 'Jost', fontSize: '12px', fontWeight: 600, color: this.props.majorIndexData[this.state.i+2].change[0] == '+' ? 'green' : 'red' }} >
                                 {this.props.majorIndexData[this.state.i+2].change}<br/>
                                 {this.props.majorIndexData[this.state.i+2].changesPercentage}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card></Col>}
+                    {this.props.majorIndexData[this.state.i+3] && <Col>
+                    <Card style={{ width: '12rem', height: '10rem' }} className = "shadow p-3 mb-5 bg-white rounded">
+                        <Card.Body>
+                            {/* <Card.Header style = {{ fontFamily: 'Jost', fontSize: '12px' }}>{data.name}</Card.Header> */}
+                            <Card.Title style = {{ fontFamily: 'Jost', fontSize: '12px', fontWeight: 700 }}>{this.props.majorIndexData[this.state.i+3].name}</Card.Title>
+                            <Card.Subtitle style = {{ fontFamily: 'Jost', fontSize: '12px', fontWeight: 600 }} className="mb-2 text-muted">${this.props.majorIndexData[this.state.i+3].price}</Card.Subtitle>
+                            <Card.Text style = {{ fontFamily: 'Jost', fontSize: '12px', fontWeight: 600, color: this.props.majorIndexData[this.state.i+3].change[0] == '+' ? 'green' : 'red' }} >
+                                {this.props.majorIndexData[this.state.i+3].change}<br/>
+                                {this.props.majorIndexData[this.state.i+3].changesPercentage}
                             </Card.Text>
                         </Card.Body>
                     </Card></Col>}
