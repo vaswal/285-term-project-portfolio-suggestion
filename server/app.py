@@ -1,13 +1,12 @@
-from flask import Flask
-from flask import render_template
-from flask import request,jsonify,Response
-from StockSuggest import get_all
-from MajorIndexes import get_major_indexes
 import requests
+from flask import Flask
+from flask import request, jsonify
 from flask_cors import CORS
 
+from StockSuggest import get_all
+from MajorIndexes import get_major_indexes
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 
 @app.route('/fullHistory/<ticker>', methods=['GET'])

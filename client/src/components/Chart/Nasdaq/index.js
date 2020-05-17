@@ -1,15 +1,36 @@
 
 import React from 'react';
 import Chart from './Chart';
-import { getData } from "./util"
+// import { getData } from "./util"
+import axios from "axios";
+import {HOSTNAME} from "../../../constants/appConstants";
 
 import { TypeChooser } from "react-stockcharts/lib/helper";
 
 class ChartComponent extends React.Component {
+
+	constructor(props) {
+        super(props);
+	}
+	
 	componentDidMount() {
-		getData().then(data => {
-			this.setState({ data })
-		})
+		
+		// axios.get(`http://${HOSTNAME}:5000/fullHistory/AAPL`)
+		axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/index/%5EIXIC`)
+                .then(data => data.data.historical.reverse())
+                .then((data) => {
+                    for (let i = 0; i < data.length; i++) {
+                        let parts = data[i].date.match(/(\d+)/g);
+                        data[i].date = new Date(parts[0], parts[1] - 1, parts[2])
+                        //console.log("data[i]")
+                        //console.log(data[i])
+                    }
+
+                    this.setState({data})
+                });
+		// getData().then(data => {
+		// 	this.setState({ data })
+		// })
 	}
 	render() {
 		if (this.state == null) {
