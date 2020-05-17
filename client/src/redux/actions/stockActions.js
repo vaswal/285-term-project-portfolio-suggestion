@@ -93,6 +93,25 @@ export const getPortfolioValueDispatch = (returnData) => {
 
 
 
+export function getPortfolioValue(payload) {
+    console.log("getPortfolioValue payload");
+    console.log(payload);
+
+    return (dispatch) => {
+        axios.get(`https://financialmodelingprep.com/api/v3/quote/${payload.stockList}`)
+            .then((response) => dispatch(getPortfolioValueDispatch({responseData: response.data, stockSuggestions: payload.stockSuggestions})));
+    }
+}
+
+export const getPortfolioValueDispatch = (returnData) => {
+    console.log("Inside getPortfolioValueDispatch");
+    console.log(returnData);
+
+    return {type: GET_PORTFOLIO_VALUE, payload: returnData}
+};
+
+
+
 export function getMajorIndicesData() {
     return (dispatch) => {
         axios.get(`http://${HOSTNAME}:5000/major_indexes`)
