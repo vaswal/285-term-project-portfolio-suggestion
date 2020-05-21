@@ -62,7 +62,7 @@ export function getStockTrend(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${payload.stockList}?timeseries=15`)
+        axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${payload.stockList}?timeseries=15?apikey=762458844e8f364cfb45d465a2e556e6`)
             .then((response) => dispatch(getStockTrendDispatch(response.data)));
     }
 }
@@ -79,7 +79,7 @@ export function getPortfolioValue(payload) {
     console.log(payload);
 
     return (dispatch) => {
-        axios.get(`https://financialmodelingprep.com/api/v3/quote/${payload.stockList}`)
+        axios.get(`https://financialmodelingprep.com/api/v3/quote/${payload.stockList}?apikey=762458844e8f364cfb45d465a2e556e6`)
             .then((response) => dispatch(getPortfolioValueDispatch({responseData: response.data, stockSuggestions: payload.stockSuggestions})));
     }
 }

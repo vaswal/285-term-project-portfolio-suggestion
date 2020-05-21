@@ -15,7 +15,7 @@ def func1(ticker):
         # Inputs
         stock_symbol = ticker
         session = requests.session()
-        url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + stock_symbol
+        url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + stock_symbol+"?apikey=762458844e8f364cfb45d465a2e556e6"
         print(url)
         response = session.get(url, timeout=15)
 
@@ -38,7 +38,7 @@ def func2(ticker):
         # Inputs
         stock_symbol = ticker
         session = requests.session()
-        url = "https://financialmodelingprep.com/api/v3/company/profile/" + stock_symbol
+        url = "https://financialmodelingprep.com/api/v3/company/profile/" + stock_symbol+"?apikey=762458844e8f364cfb45d465a2e556e6"
         print(url)
         response = session.get(url, timeout=15)
 
@@ -95,7 +95,7 @@ def portfolio_info():
     print(choices)
 
     session = requests.session()
-    url = "https://financialmodelingprep.com/api/v3/company/profile/" + ",".join(choices)
+    url = "https://financialmodelingprep.com/api/v3/company/profile/" + ",".join(choices)+"apikey=762458844e8f364cfb45d465a2e556e6"
     # print (url)
     response = session.get(url, timeout=15)
     try:

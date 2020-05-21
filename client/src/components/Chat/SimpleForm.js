@@ -36,7 +36,7 @@ class SimpleForm extends Component {
                         user: true,
                         trigger: '7',
                         validator: (value) => {
-                            let url = `https://financialmodelingprep.com/api/v3/stock/real-time-price/${value}`;
+                            let url = `https://financialmodelingprep.com/api/v3/stock/real-time-price/${value}?apikey=762458844e8f364cfb45d465a2e556e6`;
                             axios.get(url).then((response) => {
                                 console.log(response.data);
                                 this.setState({

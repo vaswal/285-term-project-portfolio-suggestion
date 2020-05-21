@@ -16,7 +16,7 @@ class ChartComponent extends Component {
             payload.ticker = this.props.ticker;
 
             //axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${this.props.ticker}`)
-            axios.get(`http://${HOSTNAME}:5000/fullHistory/${this.props.ticker}`)
+            axios.get(`http://${HOSTNAME}:5000/fullHistory/${this.props.ticker}?apikey=762458844e8f364cfb45d465a2e556e6`)
                 .then(data => data.data.historical)
                 .then((data) => {
                     for (let i = 0; i < data.length; i++) {

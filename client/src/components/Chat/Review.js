@@ -11,7 +11,7 @@ const Review = (props) => {
         setState({name, stock});
         const fetchData = async () => {
             const result = await axios(
-                `https://financialmodelingprep.com/api/v3/stock/real-time-price/${stock.value}`,
+                `https://financialmodelingprep.com/api/v3/stock/real-time-price/${stock.value}?apikey=762458844e8f364cfb45d465a2e556e6`,
             );
             setData(result.data);
         };
