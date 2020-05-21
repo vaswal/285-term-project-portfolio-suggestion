@@ -11,7 +11,7 @@ def get_stock_price(stock_symbol):
     print("stock_symbol: " + stock_symbol)
     session = requests.session()
     url = "https://financialmodelingprep.com/api/v3/quote/"+stock_symbol+"?apikey=762458844e8f364cfb45d465a2e556e6"
-    print (url)
+    # print (url)
     response = session.get(url, timeout=15)
     try:
         stock_data = response.json()
@@ -19,8 +19,8 @@ def get_stock_price(stock_symbol):
         tempData = {'error_msg': 'Deserialization Fails.'}
         return tempData
 
-    print("stock_data")
-    print(stock_data)
+    # print("stock_data")
+    # print(stock_data)
     price = float(stock_data[0]['price'])
     print("price")
     print(price)
@@ -127,7 +127,7 @@ def get_52_week_gain(stock_symbol):
     print(stock_symbol)
     session = requests.session()
     url = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock_symbol+"?timeseries=365&apikey=762458844e8f364cfb45d465a2e556e6"
-    print(url)
+    # print(url)
     response = session.get(url, timeout=15)
     return response
 
@@ -141,8 +141,8 @@ def get_change(data):
     except ValueError:
         tempData = {'error_msg': 'Deserialization Fails.'}
         return tempData
-    print(stock_data['historical'][0])
-    print(stock_data['historical'][364])
+    # print(stock_data['historical'][0])
+    # print(stock_data['historical'][364])
     close = float(stock_data['historical'][0]['close'])
     open = float(stock_data['historical'][364]['open'])
     change=close-open
