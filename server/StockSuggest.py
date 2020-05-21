@@ -10,7 +10,7 @@ symbol_map = {}
 def get_stock_price(stock_symbol):
     print("stock_symbol: " + stock_symbol)
     session = requests.session()
-    url = "https://financialmodelingprep.com/api/v3/quote/" + stock_symbol
+    url = "https://financialmodelingprep.com/api/v3/quote/"+stock_symbol+"?apikey=762458844e8f364cfb45d465a2e556e6"
     # print (url)
     response = session.get(url, timeout=15)
     try:
@@ -28,7 +28,7 @@ def get_stock_price(stock_symbol):
 
 def get_month(stock_symbol):
     session = requests.session()
-    url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + stock_symbol + "?timeseries=30"
+    url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + stock_symbol + "?timeseries=30?apikey=762458844e8f364cfb45d465a2e556e6"
     # print (url)
     response = session.get(url, timeout=15)
     try:
@@ -124,7 +124,7 @@ def get_52_week_gain(stock_symbol):
     print("stock_symbol")
     print(stock_symbol)
     session = requests.session()
-    url = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock_symbol+"?timeseries=365"
+    url = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock_symbol+"?timeseries=365?apikey=762458844e8f364cfb45d465a2e556e6"
     print(url)
     response = session.get(url, timeout=15)
     return response
