@@ -5,7 +5,7 @@ from flask import jsonify
 # get all the stocks and percentages for the selected strategies
 def get_major_indexes():
     session = requests.session()
-    url = "https://financialmodelingprep.com/api/v3/quotes/index"
+    url = "https://financialmodelingprep.com/api/v3/quotes/index?apikey=762458844e8f364cfb45d465a2e556e6"
     response = session.get(url, timeout=15)
     all_indexes =response.json()
     result = []
