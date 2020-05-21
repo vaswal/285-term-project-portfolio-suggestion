@@ -16,7 +16,7 @@ class ChartComponent extends React.Component {
 	componentDidMount() {
 		
 		// axios.get(`http://${HOSTNAME}:5000/fullHistory/AAPL`)
-		axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/index/%5EIXIC`)
+		axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/index/%5EIXIC?apikey=762458844e8f364cfb45d465a2e556e6`)
                 .then(data => data.data.historical.reverse())
                 .then((data) => {
                     for (let i = 0; i < data.length; i++) {
