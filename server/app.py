@@ -95,7 +95,7 @@ def portfolio_info():
     print(choices)
 
     session = requests.session()
-    url = "https://financialmodelingprep.com/api/v3/company/profile/" + ",".join(choices)+"apikey=762458844e8f364cfb45d465a2e556e6"
+    url = "https://financialmodelingprep.com/api/v3/company/profile/" + ",".join(choices)+"?apikey=762458844e8f364cfb45d465a2e556e6"
     # print (url)
     response = session.get(url, timeout=15)
     try:
