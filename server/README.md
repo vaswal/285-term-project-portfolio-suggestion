@@ -2,10 +2,12 @@
 
 python3 -m venv venv
 source venv/bin/activate
+
 pip install -r requirements.txt
+
 export FLASK_APP=app.py 
 
-## if there is still dependency issues
+## if there are still dependency issues, please try
 1) pip install flask
 2) pip install requests
 3) pip install flask_cors
